@@ -16,7 +16,7 @@ pnpm add unplugin-operator-overload -D
 <Tabs items={["Vite", "Rollup", "Webpack", "Rspack", "Nuxt", "Vue CLI", "Quasar", "esbuild", "Astro"]}>
   <Tab>
     ```ts title="vite.config.ts"
-    import OperatorOverload from "@graphif/unplugin-operator-overload/vite";
+    import OperatorOverload from "unplugin-operator-overload/vite";
 
     export default defineConfig({
       plugins: [
@@ -31,7 +31,7 @@ pnpm add unplugin-operator-overload -D
 
   <Tab>
     ```ts title="rollup.config.js"
-    import OperatorOverload from "@graphif/unplugin-operator-overload/rollup";
+    import OperatorOverload from "unplugin-operator-overload/rollup";
 
     export default {
       plugins: [
@@ -50,7 +50,7 @@ pnpm add unplugin-operator-overload -D
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-operator-overload/webpack").default({
+        require("unplugin-operator-overload/webpack").default({
           /* options */
         }),
       ],
@@ -63,7 +63,7 @@ pnpm add unplugin-operator-overload -D
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-operator-overload/rspack").default({
+        require("unplugin-operator-overload/rspack").default({
           /* options */
         }),
       ],
@@ -76,7 +76,7 @@ pnpm add unplugin-operator-overload -D
     export default defineNuxtConfig({
       modules: [
         [
-          "@graphif/unplugin-operator-overload/nuxt",
+          "unplugin-operator-overload/nuxt",
           {
             /* options */
           },
@@ -91,7 +91,7 @@ pnpm add unplugin-operator-overload -D
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-operator-overload/webpack").default({
+        require("unplugin-operator-overload/webpack").default({
           /* options */
         }),
       ],
@@ -101,7 +101,7 @@ pnpm add unplugin-operator-overload -D
     You can also rename the Vue configuration file to `vue.config.mjs` and use static import syntax (you should use latest `@vue/cli-service ^5.0.8`):
 
     ```ts title="vue.config.mjs"
-    import OperatorOverload from "@graphif/unplugin-operator-overload/webpack";
+    import OperatorOverload from "unplugin-operator-overload/webpack";
 
     export default {
       configureWebpack: {
@@ -119,7 +119,7 @@ pnpm add unplugin-operator-overload -D
   <Tab>
     **Vite:**
     ```ts title="vite.config.js"
-    import OperatorOverload from "@graphif/unplugin-operator-overload/vite";
+    import OperatorOverload from "unplugin-operator-overload/vite";
     import { defineConfig } from "vite";
 
     export default defineConfig({
@@ -133,12 +133,12 @@ pnpm add unplugin-operator-overload -D
 
     **Webpack:**
     ```ts title="quasar.conf.js"
-    const OperatorOverloadPlugin = require("@graphif/unplugin-operator-overload/webpack").default;
+    const OperatorOverloadPlugin = require("unplugin-operator-overload/webpack").default;
 
     module.exports = {
       build: {
         chainWebpack(chain) {
-          chain.plugin("@graphif/unplugin-operator-overload").use(
+          chain.plugin("unplugin-operator-overload").use(
             OperatorOverloadPlugin({
               /* options */
             }),
@@ -153,7 +153,7 @@ pnpm add unplugin-operator-overload -D
   <Tab>
     ```ts title="esbuild.config.js"
     import { build } from "esbuild";
-    import OperatorOverload from "@graphif/unplugin-operator-overload/esbuild";
+    import OperatorOverload from "unplugin-operator-overload/esbuild";
 
     build({
       /* ... */
@@ -169,7 +169,7 @@ pnpm add unplugin-operator-overload -D
 
   <Tab>
     ```ts title="astro.config.mjs"
-    import OperatorOverload from "@graphif/unplugin-operator-overload/astro";
+    import OperatorOverload from "unplugin-operator-overload/astro";
 
     export default defineConfig({
       integrations: [

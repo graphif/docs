@@ -12,15 +12,15 @@ The plugin adds a static property to all classes with the original name, so that
 ## Installation
 
 ```sh
-npm i -D @graphif/unplugin-original-class-name
+npm i -D unplugin-original-class-name
 # or use pnpm
-pnpm i -D @graphifif/unplugin-original-class-name
+pnpm i -D unplugin-original-class-name
 ```
 
 <Tabs items={["Vite", "Rollup", "Webpack", "Rspack", "Nuxt", "Vue CLI", "Quasar", "esbuild", "Astro"]}>
   <Tab>
     ```ts title="vite.config.ts"
-    import OriginalClassName from "@graphif/unplugin-original-class-name/vite";
+    import OriginalClassName from "unplugin-original-class-name/vite";
 
     export default defineConfig({
       plugins: [
@@ -35,7 +35,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
 
   <Tab>
     ```ts title="rollup.config.js"
-    import OriginalClassName from "@graphif/unplugin-original-class-name/rollup";
+    import OriginalClassName from "unplugin-original-class-name/rollup";
 
     export default {
       plugins: [
@@ -54,7 +54,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-original-class-name/webpack").default({
+        require("unplugin-original-class-name/webpack").default({
           /* options */
         }),
       ],
@@ -67,7 +67,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-original-class-name/rspack").default({
+        require("unplugin-original-class-name/rspack").default({
           /* options */
         }),
       ],
@@ -80,7 +80,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
     export default defineNuxtConfig({
       modules: [
         [
-          "@graphif/unplugin-original-class-name/nuxt",
+          "unplugin-original-class-name/nuxt",
           {
             /* options */
           },
@@ -95,7 +95,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
     module.exports = {
       /* ... */
       plugins: [
-        require("@graphif/unplugin-original-class-name/webpack").default({
+        require("unplugin-original-class-name/webpack").default({
           /* options */
         }),
       ],
@@ -105,7 +105,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
     You can also rename the Vue configuration file to `vue.config.mjs` and use static import syntax (you should use latest `@vue/cli-service ^5.0.8`):
 
     ```ts title="vue.config.mjs"
-    import OriginalClassName from "@graphif/unplugin-original-class-name/webpack";
+    import OriginalClassName from "unplugin-original-class-name/webpack";
 
     export default {
       configureWebpack: {
@@ -123,7 +123,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
   <Tab>
     **Vite:**
     ```ts title="vite.config.js"
-    import OriginalClassName from "@graphif/unplugin-original-class-name/vite";
+    import OriginalClassName from "unplugin-original-class-name/vite";
     import { defineConfig } from "vite";
 
     export default defineConfig({
@@ -137,12 +137,12 @@ pnpm i -D @graphifif/unplugin-original-class-name
 
     **Webpack:**
     ```ts title="quasar.conf.js"
-    const OriginalClassNamePlugin = require("@graphif/unplugin-original-class-name/webpack").default;
+    const OriginalClassNamePlugin = require("unplugin-original-class-name/webpack").default;
 
     module.exports = {
       build: {
         chainWebpack(chain) {
-          chain.plugin("@graphif/unplugin-original-class-name").use(
+          chain.plugin("unplugin-original-class-name").use(
             OriginalClassNamePlugin({
               /* options */
             }),
@@ -157,7 +157,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
   <Tab>
     ```ts title="esbuild.config.js"
     import { build } from "esbuild";
-    import OriginalClassName from "@graphif/unplugin-original-class-name/esbuild";
+    import OriginalClassName from "unplugin-original-class-name/esbuild";
 
     build({
       /* ... */
@@ -173,7 +173,7 @@ pnpm i -D @graphifif/unplugin-original-class-name
 
   <Tab>
     ```ts title="astro.config.mjs"
-    import OriginalClassName from "@graphif/unplugin-original-class-name/astro";
+    import OriginalClassName from "unplugin-original-class-name/astro";
 
     export default defineConfig({
       integrations: [
