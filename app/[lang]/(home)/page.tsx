@@ -34,7 +34,7 @@ function Hero() {
   }, [mouseX, mouseY, titleX, titleY]);
 
   return (
-    <div className="flex h-screen w-full items-end bg-gradient-to-br dark:from-green-950 dark:via-blue-950 dark:to-purple-950">
+    <div className="flex h-screen w-full items-end bg-gradient-to-br dark:from-green-950 dark:via-blue-950 dark:to-purple-950 from-green-300 via-blue-300 to-purple-300">
       <div className="container flex flex-col gap-8 pb-28">
         <h1
           className="text-7xl opacity-90"
