@@ -273,25 +273,30 @@ pnpm add unplugin-operator-overload -D
 
 ### 定义方法
 
-和 Python 一样，使用 `__add__`、`__sub__` 等魔法方法来定义运算符重载：
-
 ```ts title="example.ts"
 class Vector {
   constructor(
     public x: number,
     public y: number,
   ) {}
-  __add__(other: Vector) {
+  add(other: Vector) {
     return new Vector(this.x + other.x, this.y + other.y);
   }
-  __sub__(other: Vector) {
+  subtract(other: Vector) {
     return new Vector(this.x - other.x, this.y - other.y);
   }
-  __mul__(scalar: number) {
+  multiply(scalar: number) {
     return new Vector(this.x * scalar, this.y * scalar);
   }
-  __div__(scalar: number) {
+  divide(scalar: number) {
     return new Vector(this.x / scalar, this.y / scalar);
   }
 }
+
+const v1 = new Vector(1, 2);
+const v2 = new Vector(3, 4);
+console.log(v1 + v2); // Vector { x: 4, y: 6 }
+console.log(v1 - v2); // Vector { x: -2, y: -2 }
+console.log(v1 * 2); // Vector { x: 2, y: 4 }
+console.log(v2 / 2); // Vector { x: 1.5, y: 2 }
 ```
