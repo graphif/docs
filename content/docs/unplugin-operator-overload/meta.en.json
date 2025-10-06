@@ -1,0 +1,6 @@
+{
+  "title": "unplugin-operator-overload",
+  "description": "Add operator overloading to TypeScript",
+  "root": true,
+  "icon": "Code"
+}
