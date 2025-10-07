@@ -1,3 +1,4 @@
+import { GoogleTagManager } from "@next/third-parties/google";
 import { RootProvider } from "fumadocs-ui/provider";
 import "katex/dist/katex.css";
 import { ReactNode } from "react";
@@ -25,6 +26,7 @@ export default async function RootLayout({
 
   return (
     <html suppressHydrationWarning>
+      <GoogleTagManager gtmId="GTM-5BT4HFCW" />
       <head>
         <link
           rel="stylesheet"

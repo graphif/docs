@@ -10,6 +10,7 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@next/third-parties": "^15.5.4",
     "@octokit/core": "^7.0.5",
     "@octokit/openapi-types": "^26.0.0",
     "@octokit/request": "^10.0.5",
