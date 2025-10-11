@@ -1,0 +1,14 @@
+{
+  "title": "Project Graph 3.0",
+  "description": "下一个大版本",
+  "root": true,
+  "icon": "AppWindowMac",
+  "pages": [
+    "changes",
+    "index",
+    "---特性---",
+    "...features",
+    "---杂项---",
+    "...misc"
+  ]
+}

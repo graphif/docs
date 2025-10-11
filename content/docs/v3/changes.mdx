@@ -1,0 +1,50 @@
+---
+title: 3.0 版本变更
+icon: CircleFadingArrowUp
+---
+
+这次更新是一次彻底的底层重构，旨在用一个成熟的渲染库（Pixi.js）替换掉旧的自定义实现，以期获得更好的性能和可维护性。因此，几乎所有与渲染、用户交互、舞台对象管理相关的旧代码和 API 都已失效或被替换。任何基于旧版本进行开发的功能都需要根据新的架构进行完全重写。
+
+## 从 Canvas 2D 迁移到 Pixi.js 渲染引擎
+
+![](https://pixijs.com/images/ogimage.jpg)
+
+这是最核心的破坏性变更。整个项目已经从一个基于原生 Canvas 2D API 的自定义渲染引擎迁移到了使用 Pixi.js 库。
+
+- 大量代码删除: 整个 `app/src/core/render/` 目录被删除，包括 `Renderer`, `Canvas` 等服务。
+- 引入新依赖: 引入了 `pixi.js` 及其生态，如 `@pixi/viewport`, `@pixi/layout` 等。
+
+任何依赖于旧渲染器的代码都将完全失效。
+
+## `Project` 类接口变更
+
+- 不允许动态加载服务: `Project` 实例将不允许在运行时动态加载服务，所有服务必须在调用 `project.init()` 时一次性传入。
+- 移除主循环控制方法: `project.loop()`, `project.pause()`, `project.tick()` 等方法被移除，主循环现在由 Pixi.js 管理。
+
+## 舞台对象继承体系重构
+
+得益于 Pixi.js 强大的 Scene Objects 体系，`StageObject` 现在直接继承自 `@pixi/layout` 中的 `LayoutContainer` 类，由 Pixi.js 负责布局、渲染、交互等。
+
+- 舞台对象选中时的边框高亮效果现在由 `StageObject` 统一渲染。
+- 实体的移动逻辑现在由 `Entity` 统一实现。
+
+## 设置项变更
+
+移除的设置项:
+
+| ID                  | 原因                                          |
+| ------------------- | --------------------------------------------- |
+| cacheTextAsBitmap   | Pixi.js 的文本是位图渲染，且自带缓存逻辑      |
+| textCacheSize       | 同上                                          |
+| textScalingBehavior | 同上                                          |
+| antialiasing        | 对性能影响不大，且 Pixi.js 默认开启抗锯齿     |
+| compatibilityMode   | Pixi.js 强制使用 `requestAnimationFrame` 循环 |
+
+新增的设置项:
+
+| ID              | 说明                                  |
+| --------------- | ------------------------------------- |
+| powerPerference | 性能偏好设置，影响 WebGL 上下文的创建 |
+| textResolution  | 文本渲染质量，越大越清晰，但性能越差  |
+| maxFps          | 最大帧率                              |
+| minFps          | 最小帧率，注意此功能并非超频          |
