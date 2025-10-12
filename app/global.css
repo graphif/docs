@@ -9,7 +9,7 @@
 }
 
 @layer base {
-  *:not(pre *, code *) {
+  *:not(pre, pre *, code, code *) {
     font-family: MiSans;
   }
 }
