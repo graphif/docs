@@ -7,8 +7,6 @@ icon: CircleFadingArrowUp
 
 ## 从 Canvas 2D 迁移到 Pixi.js 渲染引擎
 
-![](https://pixijs.com/images/ogimage.jpg)
-
 这是最核心的破坏性变更。整个项目已经从一个基于原生 Canvas 2D API 的自定义渲染引擎迁移到了使用 Pixi.js 库。
 
 - 大量代码删除: 整个 `app/src/core/render/` 目录被删除，包括 `Renderer`, `Canvas` 等服务。
@@ -48,3 +46,11 @@ icon: CircleFadingArrowUp
 | textResolution  | 文本渲染质量，越大越清晰，但性能越差  |
 | maxFps          | 最大帧率                              |
 | minFps          | 最小帧率，注意此功能并非超频          |
+
+## URL 节点支持 OpenGraph
+
+我们部署了一个公益服务 [url-meta.graphif.dev](https://url-meta.graphif.dev/)，用于从 URL 中提取 Open Graph 数据
+
+## 贝塞尔曲线优化
+
+优化了贝塞尔曲线的控制点算法，借鉴了 xyflow
