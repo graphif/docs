@@ -15,6 +15,8 @@
     "@octokit/openapi-types": "^27.0.0",
     "@octokit/request": "^10.0.6",
     "@octokit/types": "^16.0.0",
+    "@orama/orama": "^3.1.16",
+    "@orama/tokenizers": "^3.1.16",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-popover": "^1.1.15",

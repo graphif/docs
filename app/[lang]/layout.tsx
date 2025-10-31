@@ -1,8 +1,9 @@
 import { GoogleTagManager } from "@next/third-parties/google";
-import { RootProvider } from "fumadocs-ui/provider";
+import { NextProvider } from "fumadocs-core/framework/next";
 import "katex/dist/katex.css";
 import { ReactNode } from "react";
 import "../global.css";
+import { Provider } from "./provider";
 
 const locales = [
   {
@@ -34,17 +35,16 @@ export default async function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
-        <RootProvider
-          search={{
-            enabled: false,
-          }}
-          i18n={{
-            locale: lang,
-            locales,
-          }}
-        >
-          {children}
-        </RootProvider>
+        <NextProvider>
+          <Provider
+            i18n={{
+              locale: lang,
+              locales,
+            }}
+          >
+            {children}
+          </Provider>
+        </NextProvider>
       </body>
     </html>
   );
