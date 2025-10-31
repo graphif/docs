@@ -1,9 +1,15 @@
 import { baseOptions } from "@/app/layout.config";
-import { HomeLayout } from "fumadocs-ui/layouts/home";
+import { HomeLayout } from "@/components/layout/home";
 import { Album, BookOpenText, MessageCircleCode } from "lucide-react";
 import type { ReactNode } from "react";
 
-export default async function Layout({ params, children }: { params: Promise<{ lang: string }>; children: ReactNode }) {
+export default async function Layout({
+  params,
+  children,
+}: {
+  params: Promise<{ lang: string }>;
+  children: ReactNode;
+}) {
   const { lang } = await params;
 
   return (

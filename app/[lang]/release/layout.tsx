@@ -1,10 +1,16 @@
 import { baseOptions } from "@/app/layout.config";
 import { octo } from "@/app/octo";
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { DocsLayout } from "@/components/layout/docs";
 import { Tag, TestTube2 } from "lucide-react";
 import type { ReactNode } from "react";
 
-export default async function Layout({ children, params }: { children: ReactNode; params: Promise<{ lang: string }> }) {
+export default async function Layout({
+  children,
+  params,
+}: {
+  children: ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
   const { lang } = await params;
 
   const releases = (
