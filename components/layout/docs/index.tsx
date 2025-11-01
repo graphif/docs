@@ -468,7 +468,7 @@ function DocsNavbar({
 
           <Link
             href="/release/latest"
-            className="inline-flex items-center gap-2 rounded-full justify-center px-3 h-9 no-underline transition hover:opacity-90 active:scale-95 border bg-fd-accent text-fd-accent-foreground"
+            className="inline-flex items-center gap-2 rounded-full justify-center px-3 h-9 no-underline transition hover:bg-fd-primary hover:text-fd-primary-foreground active:scale-95 border bg-fd-primary/10 text-fd-primary"
           >
             <Download size={16} />
             <span>立即下载</span>
