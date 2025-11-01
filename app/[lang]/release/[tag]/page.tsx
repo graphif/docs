@@ -51,7 +51,7 @@ export default async function Page(props: {
     <DocsPage toc={md.data.toc}>
       <DocsTitle>{release.name}</DocsTitle>
       <DocsDescription className="mb-2">
-        {new Date(release.published_at ?? "").toLocaleDateString()}
+        {new Date(release.published_at ?? "").toLocaleString("zh-Hans-CN")}
       </DocsDescription>
       <hr className="my-4" />
       <DocsBody>
@@ -69,6 +69,7 @@ export default async function Page(props: {
                   <DownloadLink
                     key={asset.name}
                     href={asset.browser_download_url}
+                    fileSize={asset.size}
                     proxy={lang === "zh-CN"}
                   />
                 );
@@ -90,6 +91,7 @@ export default async function Page(props: {
                   <DownloadLink
                     key={asset.name}
                     href={asset.browser_download_url}
+                    fileSize={asset.size}
                     proxy={lang === "zh-CN"}
                   />
                 );
@@ -108,6 +110,7 @@ export default async function Page(props: {
                   <DownloadLink
                     key={asset.name}
                     href={asset.browser_download_url}
+                    fileSize={asset.size}
                     proxy={lang === "zh-CN"}
                   />
                 );
@@ -128,7 +131,15 @@ export default async function Page(props: {
   );
 }
 
-function DownloadLink({ href, proxy }: { href?: string; proxy?: boolean }) {
+function DownloadLink({
+  href,
+  fileSize,
+  proxy,
+}: {
+  href?: string;
+  fileSize?: number;
+  proxy?: boolean;
+}) {
   return (
     href && (
       <Link
@@ -137,6 +148,7 @@ function DownloadLink({ href, proxy }: { href?: string; proxy?: boolean }) {
       >
         <Download />
         {href.split("/").pop()}
+        {fileSize && ` (${(fileSize / (1024 * 1024)).toFixed(2)} MB)`}
       </Link>
     )
   );
