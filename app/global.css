@@ -57,6 +57,9 @@ body {
   *:not(pre, pre *, code, code *) {
     font-family: MiSans;
   }
+  * {
+    box-sizing: border-box !important;
+  }
 }
 
 @layer components {

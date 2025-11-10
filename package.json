@@ -10,6 +10,7 @@
     "postinstall": "fumadocs-mdx"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@next/third-parties": "^16.0.1",
     "@octokit/core": "^7.0.6",
     "@octokit/openapi-types": "^27.0.0",
@@ -29,6 +30,7 @@
     "fumadocs-mdx": "13.0.3",
     "fumadocs-typescript": "^4.0.12",
     "fumadocs-ui": "^16.0.6",
+    "gsap": "^3.13.0",
     "katex": "^0.16.25",
     "lucide-react": "^0.552.0",
     "next": "16.0.1",
@@ -58,6 +60,8 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
     "tailwindcss": "^4.1.16",
     "typescript": "^5.9.3"
   }
