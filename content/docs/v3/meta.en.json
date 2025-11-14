@@ -1,0 +1,17 @@
+{
+  "title": "Project Graph 3.0",
+  "description": "The next major version",
+  "root": true,
+  "icon": "AppWindowMac",
+  "pages": [
+    "changes",
+    "index",
+    "requirements",
+    "---Features---",
+    "...feature",
+    "---Stage Objects---",
+    "...so",
+    "---Miscellaneous---",
+    "...misc"
+  ]
+}
