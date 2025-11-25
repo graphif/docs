@@ -44,7 +44,7 @@ const featureRows: Feature[] = [
   {
     title: "多模态创意画布",
     description:
-      "在单一工作区里完成笔记、头脑风暴、流程图与思维导图切换，结构化块与自由节点随心融合。",
+      "在单一工作区里完成笔记、头脑风暴、思维导图与分析框架图切换，结构化块与自由节点随心融合。",
     icon: LayoutDashboard,
     accent:
       "from-emerald-500 via-cyan-500 to-blue-500 dark:from-emerald-400 dark:via-cyan-400 dark:to-blue-500",
@@ -204,7 +204,7 @@ function Hero({ stats }: { stats: StatsData }) {
           </h1>
           <p className="text-lg text-slate-600 dark:text-white/80">
             这是一款由 Graphif
-            组织打造的桌面端创意工作台，在一个画布中完成笔记、头脑风暴、流程图与思维导图的纵深协作。基于图论的拓扑布局帮助你掌控复杂知识网络，并保持灵感流动。
+            组织打造的桌面端创意工作台，在一个画布中完成笔记、头脑风暴、思维导图与分析框架图的纵深协作。基于图论的拓扑布局帮助你梳理复杂逻辑关系网，设计并架构一个复杂系统，并保持灵感流动。
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link
@@ -350,18 +350,18 @@ function ModeShowcase() {
             </h2>
             <p className="mt-4 text-base text-slate-600 dark:text-white/70">
               Project Graph
-              的高保真界面为明暗模式各自设计独立网格体系，保证色彩一致与对比度安全。
+              的高保真界面为明暗模式各自设计独立网格体系，保证色彩一致、无缝切换主题与对比度安全。
             </p>
           </div>
           <div className="grid gap-6 lg:grid-cols-2">
             <ModeCard
               title="明亮"
-              description="白底黑字的极简主题，类似白纸的质感，适合白天的会议记录与笔记整理。"
+              description="白底黑字的极简主题，类似白纸的质感，适合在光线明亮的场景下进行会议记录与笔记整理。"
               theme="light"
             />
             <ModeCard
               title="黑夜"
-              description="深色画布搭配彩色色块，在夜间头脑风暴中保持沉浸与聚焦。"
+              description="深色画布搭配彩色色块，减轻视觉疲劳，在夜间深人静时深度思考与头脑风暴，保持沉浸与聚焦。"
               theme="dark"
             />
           </div>
