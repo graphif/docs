@@ -204,7 +204,7 @@ function Hero({ stats }: { stats: StatsData }) {
           </h1>
           <p className="text-lg text-slate-600 dark:text-white/80">
             这是一款由 Graphif
-            组织打造的桌面端创意工作台，在一个画布中完成笔记、头脑风暴、思维导图与分析框架图的纵深协作。基于图论的拓扑布局帮助你梳理复杂逻辑关系网，设计并架构一个复杂系统，并保持灵感流动。
+            组织打造的桌面端创意工作台，在一个无限大的二维平面中完成笔记、分析框架图、思维导图与头脑风暴的纵深协作。基于图论的拓扑布局帮助你梳理复杂逻辑关系网，设计并架构一个复杂系统，并保持灵感流动。
           </p>
           <div className="flex flex-col gap-4 sm:flex-row">
             <Link
