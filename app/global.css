@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-ui/css/default.css";
-@source '../node_modules/fumadocs-ui/dist/**/*.js';
+@source "../node_modules/fumadocs-ui/dist/**/*.js";
 
 @theme {
   --color-fd-background: hsl(250 20% 90%);
@@ -70,6 +70,21 @@ body {
     & > p::after {
       content: "" !important;
     }
+  }
+
+  /* 调整正文文本粗细 */
+  .prose {
+    --tw-prose-body: var(--color-fd-foreground);
+    --tw-prose-headings: var(--color-fd-foreground);
+    --tw-prose-links: var(--color-fd-primary);
+    --tw-prose-bold: var(--color-fd-foreground);
+  }
+
+  .prose p,
+  .prose li,
+  .prose blockquote,
+  .prose dl {
+    font-weight: 300;
   }
 }
 
