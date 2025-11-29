@@ -178,7 +178,7 @@ export default function HomePage({ stats }: { stats: StatsData }) {
     <main className="flex min-h-screen flex-col bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
       <Hero stats={stats} />
       <FeatureRows />
-      <ModeShowcase />
+      <FormatShowcase />
       <DeveloperShowcase />
       <Pricing />
       <FinalCTA />
@@ -336,33 +336,46 @@ function FeatureRows() {
   );
 }
 
-function ModeShowcase() {
+function FormatShowcase() {
   return (
     <section className="bg-slate-50 dark:bg-slate-900">
       <div className="mx-auto max-w-6xl px-6 py-24">
         <div className="flex flex-col gap-10 text-center">
           <div>
             <p className="text-sm tracking-[0.4em] text-slate-500 uppercase dark:text-white/60">
-              Light & Dark
+              Format & Share
             </p>
             <h2 className="mt-3 text-4xl font-semibold text-slate-900 dark:text-white">
-              双重光感，永远保持平衡
+              特有的 .prg 文件格式
             </h2>
             <p className="mt-4 text-base text-slate-600 dark:text-white/70">
-              Project Graph
-              的高保真界面为明暗模式各自设计独立网格体系，保证色彩一致、无缝切换主题与对比度安全。
+              特有的文件格式 .prg（Media Type:
+              application/vnd.project-graph），便于存储和分享；它采用 ZIP +
+              MsgPack
+              的双层封装，让结构化数据与素材一起打包，文件体积依旧保持得极小。
             </p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-2">
-            <ModeCard
-              title="明亮"
-              description="白底黑字的极简主题，类似白纸的质感，适合在光线明亮的场景下进行会议记录与笔记整理。"
-              theme="light"
+          <div className="grid gap-6 lg:grid-cols-3">
+            <FormatCard
+              title="随时拎走整个项目"
+              description="单一 .prg 文件保存图表、标签、评论与历史版本，邮件和 IM 都能直接分享。"
+              label="Media Type"
+              value="application/vnd.project-graph"
+              gradient="from-emerald-400/20 to-cyan-400/10"
             />
-            <ModeCard
-              title="黑夜"
-              description="深色画布搭配彩色色块，减轻视觉疲劳，在夜间深人静时深度思考与头脑风暴，保持沉浸与聚焦。"
-              theme="dark"
+            <FormatCard
+              title="ZIP + MsgPack 结构"
+              description="打包二进制资源与结构化数据，解析速度快且对比 JSON 更节省 40% 以上空间。"
+              label="Payload"
+              value="ZIP archive · MsgPack stream"
+              gradient="from-sky-400/20 to-indigo-400/10"
+            />
+            <FormatCard
+              title="适合自动化协作"
+              description="可直接放入 Git LFS、对象存储或自建流水线，校验哈希即可完成发布。"
+              label="Workflow"
+              value="Git · CI/CD · Cloud"
+              gradient="from-rose-400/20 to-amber-400/10"
             />
           </div>
         </div>
@@ -371,61 +384,36 @@ function ModeShowcase() {
   );
 }
 
-function ModeCard({
+function FormatCard({
   title,
   description,
-  theme,
+  label,
+  value,
+  gradient,
 }: {
   title: string;
   description: string;
-  theme: "light" | "dark";
+  label: string;
+  value: string;
+  gradient: string;
 }) {
-  const isLight = theme === "light";
   return (
     <div className="rounded-3xl border border-slate-200 bg-white/80 p-8 text-left dark:border-white/10 dark:bg-white/5">
       <div
-        className={`rounded-2xl border p-6 shadow-2xl ${
-          isLight
-            ? "border-slate-200 bg-white text-slate-900"
-            : "border-slate-700 bg-slate-900 text-white"
-        }`}
+        className={`h-32 rounded-2xl bg-linear-to-br ${gradient} p-4 text-left text-sm text-white`}
       >
-        <div className="mb-4 flex gap-2">
-          <span className="inline-flex size-3 rounded-full bg-rose-400" />
-          <span className="inline-flex size-3 rounded-full bg-amber-300" />
-          <span className="inline-flex size-3 rounded-full bg-emerald-300" />
-        </div>
-        <div className="space-y-4">
-          <div className="grid gap-3">
-            <div
-              className={`h-3 w-24 rounded-full ${isLight ? "bg-slate-200" : "bg-white/40"}`}
-            />
-            <div
-              className={`h-6 w-44 rounded-full ${isLight ? "bg-slate-900/10" : "bg-white/20"}`}
-            />
-          </div>
-          <div
-            className={`h-40 rounded-2xl border p-4 ${isLight ? "border-slate-100" : "border-white/10"}`}
-          >
-            <div className="grid grid-cols-3 gap-3">
-              {[1, 2, 3, 4, 5, 6].map((item) => (
-                <div
-                  key={item}
-                  className={`h-16 rounded-xl ${
-                    isLight
-                      ? "bg-linear-to-br from-emerald-100 to-cyan-100"
-                      : "bg-linear-to-br from-emerald-500/30 to-cyan-500/20"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
+        <p className="text-xs tracking-wide text-white/70 uppercase">
+          metadata
+        </p>
+        <p className="mt-2 font-mono text-base">{label}</p>
+        <p className="mt-1 font-mono text-xs text-white/80">{value}</p>
       </div>
       <h3 className="mt-6 text-2xl font-semibold text-slate-900 dark:text-white">
         {title}
       </h3>
-      <p className="mt-2 text-slate-600 dark:text-white/70">{description}</p>
+      <p className="mt-2 text-base text-slate-600 dark:text-white/70">
+        {description}
+      </p>
     </div>
   );
 }
