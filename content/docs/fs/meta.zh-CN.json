@@ -1,0 +1,6 @@
+{
+  "title": "@graphif/fs",
+  "description": "将所有协议的文件系统抽象为统一的接口",
+  "icon": "HardDrive",
+  "root": true
+}

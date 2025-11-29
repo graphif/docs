@@ -1,0 +1,56 @@
+---
+title: 开始使用
+icon: Album
+---
+
+## 什么是 `@graphif/fs`？
+
+`@graphif/fs` 是一个操作文件系统的库，旨在提供一个抽象的文件系统接口。它允许开发者通过注册不同的提供者（`FsProvider`）来适配各种文件系统实现，例如本地文件系统、内存文件系统或远程文件系统。
+
+<Tabs items={["使用 @graphif/fs", "传统写法"]}>
+<Tab>
+```ts
+// 只需创建一个全局的 fs 实例，并注册所需的提供者，即可使用统一的文件系统接口进行文件操作
+
+import { URI } from "vscode-uri";
+import { createFs } from "@graphif/fs";
+import { FsProviderTauri } from "@graphif/fs-tauri";
+import { FsProviderHttp } from "@graphif/fs-http";
+import { fetch } from "@tauri-apps/plugin-http";
+
+const fs = createFs()
+  // 提供 `file` 协议的支持
+  .use(FsProviderTauri)
+  // 提供 `http` `https` `webdav` `webdavs` `dav` `davs` 协议的支持
+  .use(FsProviderHttp, fetch);
+
+// 现在可以通过统一的 fs 实例进行文件操作了
+await fs.read(URI.file("/home/user/file.txt"));
+await fs.read(URI.parse("https://example.com/file.txt"));
+```
+</Tab>
+<Tab>
+```ts
+// 需要手动判断不同的 URI scheme，然后调用不同的 API 进行文件操作，非常繁琐
+
+import { URI } from "vscode-uri";
+import { readFile } from "@tauri-apps/plugin-fs";
+import { fetch } from "@tauri-apps/plugin-http";
+
+async function myReadFile(uri: URI): Promise<Uint8Array> {
+  if (parsedUri.scheme === "file") {
+    // 读取本地文件系统
+    return await readFile(parsedUri.fsPath);
+  } else if (parsedUri.scheme === "http" || parsedUri.scheme === "https") {
+    // 通过 HTTP(S) 获取远程文件
+    return new Uint8Array(await (await fetch(uri)).arrayBuffer());
+  } else {
+    throw new Error(`Unsupported URI scheme: ${parsedUri.scheme}`);
+  }
+}
+
+await myReadFile(URI.file("/home/user/file.txt"));
+await myReadFile(URI.parse("https://example.com/file.txt"));
+```
+</Tab>
+</Tabs>
