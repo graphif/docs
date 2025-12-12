@@ -4,6 +4,8 @@
 @source "../node_modules/fumadocs-ui/dist/**/*.js";
 
 @theme {
+  --font-sans: "MiSans", -apple-system, system-ui, sans-serif;
+  --font-mono: "Maple Mono", monospace;
   --color-fd-background: hsl(250 20% 90%);
   --color-fd-primary: hsl(340, 40%, 48%);
   --color-fd-border: hsl(240, 40%, 90%);
@@ -53,11 +55,11 @@ body {
   @apply hover:bg-fd-accent/80 cursor-pointer;
 }
 
-@layer base {
+/*@layer base {
   *:not(pre, pre *, code, code *) {
     font-family: MiSans;
   }
-}
+}*/
 
 @layer components {
   .prose blockquote {

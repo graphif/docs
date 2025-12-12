@@ -31,7 +31,11 @@ export default async function RootLayout({
       <head>
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/misans-vf@1.0.0/lib/MiSans.min.css"
+          href="https://gcore.jsdelivr.net/npm/misans-vf@1.0.0/lib/MiSans.min.css"
+        />
+        <link
+          rel="stylesheet"
+          href="https://gcore.jsdelivr.net/npm/@fontsource/maple-mono@5.2.6/index.min.css"
         />
       </head>
       <body className="flex min-h-screen flex-col">

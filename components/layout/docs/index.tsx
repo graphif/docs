@@ -9,6 +9,7 @@ import {
 import {
   ChevronDown,
   Download,
+  Heart,
   Languages,
   Sidebar as SidebarIcon,
   X,
@@ -198,7 +199,7 @@ export function DocsLayout(props: DocsLayoutProps) {
                     buttonVariants({
                       color: "ghost",
                       size: "icon-sm",
-                      className: "mt-px mb-auto text-fd-muted-foreground",
+                      className: "text-fd-muted-foreground mt-px mb-auto",
                     }),
                   )}
                 >
@@ -213,7 +214,7 @@ export function DocsLayout(props: DocsLayoutProps) {
         {viewport}
         <Footer
           className={cn(
-            "hidden flex-row text-fd-muted-foreground items-center",
+            "text-fd-muted-foreground hidden flex-row items-center",
             iconLinks.length > 0 && "max-lg:flex",
           )}
         >
@@ -245,7 +246,7 @@ export function DocsLayout(props: DocsLayoutProps) {
               buttonVariants({
                 size: "icon-sm",
                 color: "ghost",
-                className: "ms-auto text-fd-muted-foreground",
+                className: "text-fd-muted-foreground ms-auto",
               }),
             )}
           >
@@ -280,7 +281,7 @@ export function DocsLayout(props: DocsLayoutProps) {
           ))}
           {i18n && (
             <LanguageToggle>
-              <Languages className="size-4.5 text-fd-muted-foreground" />
+              <Languages className="text-fd-muted-foreground size-4.5" />
             </LanguageToggle>
           )}
           {themeSwitch.enabled !== false &&
@@ -348,7 +349,7 @@ function DocsNavbar({
     >
       <div
         className={cn(
-          "flex border-b px-4 gap-2 flex-1 md:px-6",
+          "flex flex-1 gap-2 border-b px-4 md:px-6",
           navMode === "top" && "ps-7",
         )}
       >
@@ -389,8 +390,8 @@ function DocsNavbar({
           (searchToggle.components?.lg ? (
             <div
               className={cn(
-                "w-full my-auto max-md:hidden",
-                navMode === "top" ? "rounded-xl max-w-sm" : "max-w-[240px]",
+                "my-auto w-full max-md:hidden",
+                navMode === "top" ? "max-w-sm rounded-xl" : "max-w-60",
               )}
             >
               {searchToggle.components.lg}
@@ -399,10 +400,8 @@ function DocsNavbar({
             <LargeSearchToggle
               hideIfDisabled
               className={cn(
-                "w-full my-auto max-md:hidden",
-                navMode === "top"
-                  ? "rounded-xl max-w-sm ps-2.5"
-                  : "max-w-[240px]",
+                "my-auto w-full max-md:hidden",
+                navMode === "top" ? "max-w-sm rounded-xl ps-2.5" : "max-w-60",
               )}
             />
           ))}
@@ -414,7 +413,7 @@ function DocsNavbar({
                 <NavbarLinkItem
                   key={i}
                   item={item}
-                  className="text-sm text-fd-muted-foreground transition-colors hover:text-fd-accent-foreground data-[active=true]:text-fd-primary"
+                  className="text-fd-muted-foreground hover:text-fd-accent-foreground data-[active=true]:text-fd-primary text-sm transition-colors"
                 />
               ))}
           </div>
@@ -439,12 +438,12 @@ function DocsNavbar({
               (searchToggle.components?.sm ?? (
                 <SearchToggle hideIfDisabled className="p-2" />
               ))}
-            <NavbarSidebarTrigger className="p-2 -me-1.5" />
+            <NavbarSidebarTrigger className="-me-1.5 p-2" />
           </div>
           <div className="flex items-center gap-2 max-md:hidden">
             {i18n && (
               <LanguageToggle>
-                <Languages className="size-4.5 text-fd-muted-foreground" />
+                <Languages className="text-fd-muted-foreground size-4.5" />
               </LanguageToggle>
             )}
             {themeSwitch.enabled !== false &&
@@ -458,7 +457,7 @@ function DocsNavbar({
                     color: "secondary",
                     size: "icon-sm",
                   }),
-                  "text-fd-muted-foreground rounded-full -me-1.5",
+                  "text-fd-muted-foreground -me-1.5 rounded-full",
                 )}
               >
                 <SidebarIcon />
@@ -467,8 +466,15 @@ function DocsNavbar({
           </div>
 
           <Link
+            href="/donate"
+            className="hover:bg-fd-primary dark:hover:text-fd-primary-foreground bg-fd-primary/2 text-fd-primary inline-flex h-9 items-center justify-center gap-2 rounded-full border px-3 no-underline transition hover:text-white active:scale-95"
+          >
+            <Heart size={16} />
+            <span>赞助</span>
+          </Link>
+          <Link
             href="/release/latest"
-            className="inline-flex items-center gap-2 rounded-full justify-center px-3 h-9 no-underline transition hover:bg-fd-primary hover:text-fd-primary-foreground active:scale-95 border bg-fd-primary/10 text-fd-primary"
+            className="hover:bg-fd-primary dark:hover:text-fd-primary-foreground bg-fd-primary/10 text-fd-primary inline-flex h-9 items-center justify-center gap-2 rounded-full border px-3 no-underline transition hover:text-white active:scale-95"
           >
             <Download size={16} />
             <span>立即下载</span>
@@ -478,7 +484,7 @@ function DocsNavbar({
       {tabs.length > 0 && (
         <LayoutTabs
           className={cn(
-            "border-b px-6 h-10 max-lg:hidden",
+            "h-10 border-b px-6 max-lg:hidden",
             navMode === "top" && "ps-7",
           )}
           options={tabs}
@@ -498,7 +504,7 @@ function NavbarLinkItem({
         <PopoverTrigger
           {...props}
           className={cn(
-            "inline-flex items-center gap-1.5 has-data-[active=true]:text-fd-primary",
+            "has-data-[active=true]:text-fd-primary inline-flex items-center gap-1.5",
             props.className,
           )}
         >
@@ -518,7 +524,7 @@ function NavbarLinkItem({
               <BaseLinkItem
                 key={i}
                 item={child}
-                className="inline-flex items-center gap-2 rounded-md p-2 text-start hover:bg-fd-accent hover:text-fd-accent-foreground data-[active=true]:text-fd-primary [&_svg]:size-4"
+                className="hover:bg-fd-accent hover:text-fd-accent-foreground data-[active=true]:text-fd-primary inline-flex items-center gap-2 rounded-md p-2 text-start [&_svg]:size-4"
               >
                 {child.icon}
                 {child.text}

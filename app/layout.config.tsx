@@ -21,7 +21,6 @@ export function baseOptions(lang: string): BaseLayoutProps {
         </>
       ),
     },
-    links: [],
     githubUrl: "https://github.com/graphif/project-graph",
   };
 }
