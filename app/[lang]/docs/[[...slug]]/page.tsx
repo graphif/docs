@@ -6,12 +6,18 @@ import {
 } from "@/components/layout/page";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 export default async function Page(props: {
   params: Promise<{ lang: string; slug?: string[] }>;
 }) {
   const params = await props.params;
+
+  if (params.slug && params.slug[0] === "app") {
+    // 重定向到/docs/prg/...
+    redirect(`/docs/prg/${params.slug.slice(1).join("/")}`);
+  }
+
   const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
 
