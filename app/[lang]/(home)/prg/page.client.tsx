@@ -16,7 +16,6 @@ import {
   Palette,
   Shield,
   Terminal,
-  Twitter,
   Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -144,7 +143,6 @@ const developers: Developer[] = [
     links: [
       { label: "GitHub", to: "https://github.com/zty012", icon: Github },
       { label: "Blog", to: "https://2y.nz", icon: Globe },
-      { label: "X", to: "https://x.com/@zty012x", icon: Twitter },
     ],
   },
   {
