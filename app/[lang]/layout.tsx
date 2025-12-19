@@ -1,9 +1,14 @@
 import { GoogleTagManager } from "@next/third-parties/google";
 import { NextProvider } from "fumadocs-core/framework/next";
 import "katex/dist/katex.css";
+import { Metadata } from "next";
 import { ReactNode } from "react";
 import "../global.css";
 import { Provider } from "./provider";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("https://graphif.dev"),
+};
 
 const locales = [
   {

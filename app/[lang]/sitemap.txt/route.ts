@@ -5,9 +5,10 @@ export const revalidate = false;
 
 export async function GET() {
   return new NextResponse(
-    ["https://project-graph.top/", ...source.getPages().map((page) => `https://project-graph.top${page.url}`)].join(
-      "\n",
-    ),
+    [
+      "https://graphif.dev/",
+      ...source.getPages().map((page) => `https://graphif.dev${page.url}`),
+    ].join("\n"),
     {
       headers: {
         "Content-Type": "text/plain",

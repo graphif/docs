@@ -6,6 +6,7 @@ import {
 } from "@/components/layout/page";
 import { source } from "@/lib/source";
 import { getMDXComponents } from "@/mdx-components";
+import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 export default async function Page(props: {
@@ -43,7 +44,7 @@ export default async function Page(props: {
 
 export async function generateMetadata(props: {
   params: Promise<{ lang: string; slug?: string[] }>;
-}) {
+}): Promise<Metadata> {
   const params = await props.params;
   const page = source.getPage(params.slug, params.lang);
   if (!page) notFound();
@@ -51,6 +52,20 @@ export async function generateMetadata(props: {
   return {
     title: page.data.title,
     description: page.data.description,
+    openGraph: {
+      title: page.data.title,
+      description: page.data.description,
+      url: `https://graphif.dev${page.url}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.data.title,
+      description: page.data.description,
+    },
+    alternates: {
+      canonical: `https://graphif.dev${page.url}`,
+    },
   };
 }
 

@@ -137,7 +137,7 @@ function MainHero() {
         >
           <span className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-400 backdrop-blur-md">
             <span className="mr-2 h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-            Graphif v1.0 现已发布
+            全新官网首页已上线
           </span>
         </motion.div>
 
