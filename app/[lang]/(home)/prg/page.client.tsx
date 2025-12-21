@@ -7,7 +7,6 @@ import {
   Box,
   Check,
   CheckCircle2,
-  CloudUpload,
   GitBranch,
   Github,
   Globe,
@@ -63,32 +62,37 @@ type Developer = {
 
 const featureRows: Feature[] = [
   {
-    title: "多模态创意画布",
-    description:
-      "在单一工作区里完成笔记、头脑风暴、思维导图与分析框架图切换，结构化块与自由节点随心融合。",
-    icon: LayoutDashboard,
+    title: "嵌套图拓扑",
+    description: "构建无限深度的层级结构。",
+    icon: GitBranch,
     accent: "text-emerald-500",
   },
   {
-    title: "桌面端原生体验",
+    title: "极速性能",
     description:
-      "跨 macOS / Windows / Linux 的高保真桌面端 App，离线可用，配合云同步实现团队协作。",
-    icon: MonitorCog,
+      "当前 v2.0 使用优化的 Canvas 2D 渲染；v3.0（开发中）将升级至 Pixi.js，轻松应对数千节点的高性能场景。",
+    icon: Zap,
     accent: "text-amber-500",
   },
   {
-    title: "WebDAV 云同步",
-    description:
-      "兼容主流云存储服务的 WebDAV 协议，轻松连接 Nextcloud、OwnCloud、Box.com 等，实现跨设备数据同步。",
-    icon: CloudUpload,
+    title: "现代前端美学",
+    description: "拥有精致 Web 体验的桌面应用，丝般顺滑的动画与响应式交互。",
+    icon: Palette,
     accent: "text-purple-500",
   },
   {
-    title: "简洁流畅的 UI",
+    title: "禅意界面",
     description:
-      "基于 shadcn/ui 和自研多窗口系统打造的现代化界面，支持用户自定义主题颜色以及多窗口布局。",
-    icon: Palette,
+      "零干扰。无广告、无臃肿功能、无多余 UI 元素。只留你与灵感独处。",
+    icon: LayoutDashboard,
     accent: "text-blue-500",
+  },
+  {
+    title: "原生文件格式",
+    description:
+      ".prg (application/vnd.project-graph) 文件，实现无缝分享与版本控制。",
+    icon: Box,
+    accent: "text-indigo-500",
   },
 ];
 
