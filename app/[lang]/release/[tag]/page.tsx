@@ -11,6 +11,7 @@ import {
   AlertTriangle,
   Command,
   ExternalLink,
+  HelpCircle,
   Monitor,
   Package,
   Terminal,
@@ -94,6 +95,14 @@ export default async function Page(props: {
             {assets.windows.length === 0 && (
               <EmptyState text={isZh ? "暂无构建" : "No assets"} />
             )}
+            <FaqLink
+              href={`/${lang}/docs/prg/misc/faq/windows`}
+              text={
+                isZh
+                  ? "遇到任何问题请先点击此处前往常见问题页面"
+                  : "Having issues? Check FAQ"
+              }
+            />
           </PlatformCard>
 
           {/* macOS */}
@@ -125,6 +134,14 @@ export default async function Page(props: {
             {assets.mac.length === 0 && (
               <EmptyState text={isZh ? "暂无构建" : "No assets"} />
             )}
+            <FaqLink
+              href={`/${lang}/docs/prg/misc/faq/mac`}
+              text={
+                isZh
+                  ? "遇到任何问题请先点击此处前往常见问题页面"
+                  : "Having issues? Check FAQ"
+              }
+            />
           </PlatformCard>
 
           {/* Linux */}
@@ -165,6 +182,14 @@ export default async function Page(props: {
             {assets.linux.length === 0 && (
               <EmptyState text={isZh ? "暂无构建" : "No assets"} />
             )}
+            <FaqLink
+              href={`/${lang}/docs/prg/misc/faq/linux`}
+              text={
+                isZh
+                  ? "遇到任何问题请先点击此处前往常见问题页面"
+                  : "Having issues? Check FAQ"
+              }
+            />
           </PlatformCard>
         </div>
 
@@ -239,5 +264,17 @@ function EmptyState({ text }: { text: string }) {
     <div className="flex h-20 items-center justify-center rounded-lg border border-dashed border-slate-200 bg-slate-50 text-sm text-slate-400 dark:border-slate-800 dark:bg-slate-900/50">
       {text}
     </div>
+  );
+}
+
+function FaqLink({ href, text }: { href: string; text: string }) {
+  return (
+    <Link
+      href={href}
+      className="mt-2 flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-amber-400 bg-amber-50 p-3 text-sm font-medium text-amber-700 transition-all hover:border-solid hover:border-amber-500 hover:bg-amber-100 hover:shadow-md dark:border-amber-500/50 dark:bg-amber-900/20 dark:text-amber-300 dark:hover:border-amber-400 dark:hover:bg-amber-900/40"
+    >
+      <HelpCircle className="size-4" />
+      {text}
+    </Link>
   );
 }

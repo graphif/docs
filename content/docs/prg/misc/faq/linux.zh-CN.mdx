@@ -9,36 +9,14 @@ icon: Computer
 
 ### 开启 GPU 加速
 
-下列方法任选其一，或者使用其他方法，只要能修改环境变量即可
+定义环境变量：`WEBKIT_FORCE_COMPOSITING_MODE=1`
 
 <Callout type="warn">
-  如果已经定义过 `WEBKIT_DISABLE_COMPOSITING_MODE=1` 环境变量，需要先移除，因为这两个环境变量会相互冲突
+  如果已经定义过 `WEBKIT_DISABLE_COMPOSITING_MODE=1`
+  环境变量，需要先移除，因为这两个环境变量会相互冲突
 </Callout>
 
-<Tabs items={["/etc/environment", "Shell rc 文件", "Hyprland"]}>
-<Tab>
-```sh title="/etc/environment"
-WEBKIT_FORCE_COMPOSITING_MODE=1
-```
-
-</Tab>
-
-<Tab>
-```sh title="~/.zshrc"
-export WEBKIT_FORCE_COMPOSITING_MODE=1
-```
-
-</Tab>
-
-<Tab>
-```ini title="~/.config/hypr/hyprland.conf"
-env = WEBKIT_FORCE_COMPOSITING_MODE, 1
-```
-</Tab>
-  
-</Tabs>
-
-### 设置最小 GPU 频率
+### 设置最小 GPU 频率（在只有核显的笔记本上尤为重要）
 
 以 Intel GPU 和 TLP 调度为例，仅供参考
 
@@ -53,3 +31,27 @@ env = WEBKIT_FORCE_COMPOSITING_MODE, 1
 </Tab>
 
 </Tabs>
+
+## Nvidia
+
+大多数情况下，在 Wayland 上启动应用会报错：`Error 71 (Protocol error) dispatching to Wayland display.`
+
+建议在 UEFI 中切换到独显直连模式（Discrete GPU Only）。虽然设置环境变量 `WEBKIT_DISABLE_DMABUF_RENDERER=1` 也可以解决，但是会牺牲 GPU 加速，导致界面使用 CPU 渲染
+
+### 解释
+
+开启 UEFI 中的“独显直连”（Discrete GPU Only / MUX Switch）之所以能解决问题，是因为它彻底改变了图形渲染的**底层路径**。
+
+在普通的“混合模式”（Hybrid/Optimus）下，Linux 处理图形就像是“接力赛”：
+
+1. **NVIDIA 显卡**负责计算和渲染（比如渲染浏览器页面）。
+2. 渲染完的数据通过 **DMA-BUF** 协议传给 **集成显卡（Intel/AMD）**。
+3. **集成显卡**再把这些数据刷到你的屏幕上。
+
+**问题就出在第 2 步：** NVIDIA 的驱动在 Wayland 协议下，长期以来与集成显卡的“交接棒”很不默契。DMA-BUF 在这种跨显卡传输时经常出现同步错误，导致 WebKit 引擎识别不到缓冲区，直接罢工（黑屏/白屏）。
+
+**当你开启“独显直连”后：**
+
+- **物理链路变了：** 你的屏幕现在直接连在 NVIDIA 显卡上，中间商（集显）被彻底踢出局。
+- **不再需要跨卡同步：** 渲染和显示都在同一块显卡上完成，原本那个容易出 bug 的“跨显卡数据传输（DMA-BUF Sharing）”环节直接消失了。
+- **性能完全释放：** 正如你之前感受到的，不需要 `WEBKIT_DISABLE_DMABUF_RENDERER=1` 这种“降级补丁”后，GPU 加速能全量运行，自然就不卡了。
