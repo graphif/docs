@@ -1,7 +1,0 @@
-{
-  "title": "AI",
-  "description": "洞察即现，连结未来",
-  "icon": "Sparkles",
-  "root": true,
-  "pages": ["index", "---增值服务---", "...paid"]
-}
