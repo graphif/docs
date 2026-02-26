@@ -7,11 +7,16 @@ export interface DonationData {
   currency?: string;
 }
 
-export default async function DonatePage() {
+export default async function DonatePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   // 顺序=从早到晚
   const donations: DonationData[] = await (
     await fetch("https://api.graphif.dev/api/donations")
   ).json();
 
-  return <DonatePageClient donations={donations} />;
+  return <DonatePageClient donations={donations} lang={lang} />;
 }

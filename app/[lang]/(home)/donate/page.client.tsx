@@ -1,15 +1,92 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import { Crown, Heart, Sparkles } from "lucide-react";
+import { Copy, Crown, Heart, Sparkles, Wallet } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { DonationData } from "./page";
+
+const t = {
+  "zh-CN": {
+    badge: "支持开源",
+    heroTitle: "为 Graphif 注入动力",
+    heroDesc:
+      "您的每一笔捐赠都将直接支持核心开发者维护服务器、购买域名以及投入更多时间开发新功能。",
+    dev1Name: "阿岳",
+    dev1Desc: "负责客户端核心逻辑、交互体验优化、多平台适配以及视频教程制作。",
+    dev2Desc: "负责 Linux 版本维护、官网部署、服务器运维以及云同步架构设计。",
+    thankTitle: "感谢支持者",
+    thankDesc: "每一份支持都是我们前进的燃料。",
+    totalDonations: (amount: string) => `累计收到捐赠 ¥${amount}`,
+    topDonors: "🏆 慷慨榜",
+    recentDonations: "⏳ 最新捐赠",
+    noDonations: "暂无捐赠数据，期待您的支持！",
+    disclaimer: "* 捐赠列表数据可能存在短暂延迟，通常会在 24 小时内更新。",
+    cryptoTitle: "💰 加密货币捐赠",
+    cryptoDesc: "您也可以通过以下加密货币地址进行捐赠：",
+    copied: "已复制！",
+    copyAddress: "复制地址",
+  },
+  en: {
+    badge: "Support Open Source",
+    heroTitle: "Power Up Graphif",
+    heroDesc:
+      "Every donation directly supports core developers in maintaining servers, purchasing domains, and dedicating more time to building new features.",
+    dev1Name: "Littlefean",
+    dev1Desc:
+      "Responsible for core client logic, interaction experience optimization, multi-platform adaptation, and video tutorials.",
+    dev2Desc:
+      "Responsible for Linux version maintenance, website deployment, server operations, and cloud sync architecture design.",
+    thankTitle: "Thank Our Supporters",
+    thankDesc: "Every contribution fuels our progress.",
+    totalDonations: (amount: string) => `Total Donations Received: ¥${amount}`,
+    topDonors: "🏆 Top Donors",
+    recentDonations: "⏳ Recent Donations",
+    noDonations: "No donations yet. Be the first to support us!",
+    disclaimer:
+      "* Donation data may have a brief delay and is typically updated within 24 hours.",
+    cryptoTitle: "💰 Crypto Donations",
+    cryptoDesc: "You can also donate via the following cryptocurrency addresses:",
+    copied: "Copied!",
+    copyAddress: "Copy address",
+  },
+};
+
+function getT(lang: string) {
+  return lang === "zh-CN" ? t["zh-CN"] : t.en;
+}
+
+const cryptoAddresses = [
+  {
+    name: "Ethereum / Base / BNB Smart Chain / Polygon",
+    address: "0xaf019F37Cd962aAd0b5C8C18549F5244eaBc2ae1",
+    color: "bg-indigo-500",
+  },
+  {
+    name: "Tron (TRX/TRC-20)",
+    address: "TNz1L8QQSiHkvFpHK18twSeivJj6cAeibM",
+    color: "bg-red-500",
+  },
+  {
+    name: "Bitcoin (BTC)",
+    address: "bc1q8xksecqyydtu28frazfytv8w37vvlmat05k4au",
+    color: "bg-orange-500",
+  },
+  {
+    name: "Solana (SOL)",
+    address: "Hm62saxVNMPSHnStSJ3538HUzXck3HTQhnsX4WZmkdZp",
+    color: "bg-purple-500",
+  },
+];
 
 export default function DonatePageClient({
   donations,
+  lang,
 }: {
   donations: DonationData[];
+  lang: string;
 }) {
+  const i = getT(lang);
   // Calculate total amount
   const totalAmount = donations.reduce((acc, curr) => acc + curr.amount, 0);
 
@@ -34,50 +111,69 @@ export default function DonatePageClient({
         <div className="relative mx-auto max-w-5xl px-6 text-center">
           <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100/50 px-3 py-1 text-sm font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
             <Heart className="h-4 w-4 fill-current" />
-            Support Open Source
+            {i.badge}
           </div>
           <h1 className="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl dark:text-white">
-            为 Graphif 注入动力
+            {i.heroTitle}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
-            您的每一笔捐赠都将直接支持核心开发者维护服务器、购买域名以及投入更多时间开发新功能。
+            {i.heroDesc}
           </p>
         </div>
       </section>
 
       <div className="relative z-10 mx-auto -mt-12 max-w-6xl px-6">
-        {/* Developer Cards */}
-        <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
-          <DeveloperCard
-            name="阿岳"
-            handle="@Littlefean"
-            role="Windows/macOS Maintainer"
-            imageSrc="/images/donate-littlefean.png"
-            description="负责客户端核心逻辑、交互体验优化、多平台适配以及视频教程制作。"
-            color="blue"
-          />
-          <DeveloperCard
-            name="ZTY"
-            handle="@zty012"
-            role="Linux Maintainer & Fullstack"
-            imageSrc="/images/donate-zty012.png"
-            description="负责 Linux 版本维护、官网部署、服务器运维以及云同步架构设计。"
-            color="emerald"
-          />
-        </div>
+        {/* Developer Cards / Crypto Addresses */}
+        {lang === "zh-CN" ? (
+          <div className="mx-auto grid max-w-4xl gap-8 md:grid-cols-2">
+            <DeveloperCard
+              name={i.dev1Name}
+              handle="@Littlefean"
+              role="Windows/macOS Maintainer"
+              imageSrc="/images/donate-littlefean.png"
+              description={i.dev1Desc}
+              color="blue"
+            />
+            <DeveloperCard
+              name="ZTY"
+              handle="@zty012"
+              role="Linux Maintainer & Fullstack"
+              imageSrc="/images/donate-zty012.png"
+              description={i.dev2Desc}
+              color="emerald"
+            />
+          </div>
+        ) : (
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-8 text-center">
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                {i.cryptoTitle}
+              </h2>
+              <p className="mt-3 text-slate-600 dark:text-slate-400">
+                {i.cryptoDesc}
+              </p>
+            </div>
+            <div className="grid gap-4">
+              {cryptoAddresses.map((crypto) => (
+                <CryptoAddressCard key={crypto.name} crypto={crypto} lang={lang} />
+              ))}
+            </div>
+          </div>
+        )}
 
-        {/* Donors Section */}
+        {/* Donors Section (zh-CN only) */}
+        {lang === "zh-CN" && (
         <div className="mt-24">
           <div className="mb-16 text-center">
             <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-              感谢支持者
+              {i.thankTitle}
             </h2>
             <p className="mt-4 text-slate-600 dark:text-slate-400">
-              每一份支持都是我们前进的燃料。
+              {i.thankDesc}
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
               <Sparkles className="h-6 w-6" />
-              <span>累计收到捐赠 ¥{totalAmount.toFixed(2)}</span>
+              <span>{i.totalDonations(totalAmount.toFixed(2))}</span>
             </div>
           </div>
 
@@ -85,7 +181,7 @@ export default function DonatePageClient({
           {topDonors.length > 0 && (
             <div className="mx-auto mb-24 max-w-4xl">
               <h3 className="mb-12 text-center text-xl font-semibold text-slate-900 dark:text-white">
-                🏆 慷慨榜
+                {i.topDonors}
               </h3>
               <div className="flex justify-center gap-4">
                 {topDonors[1] && (
@@ -104,7 +200,7 @@ export default function DonatePageClient({
           {/* Recent Donations Timeline */}
           <div className="mx-auto max-w-xl">
             <h3 className="mb-8 text-center text-xl font-semibold text-slate-900 dark:text-white">
-              ⏳ 最新捐赠
+              {i.recentDonations}
             </h3>
             <div className="relative border-l border-slate-200 pl-8 dark:border-slate-800">
               {recentDonations.length > 0 ? (
@@ -113,7 +209,7 @@ export default function DonatePageClient({
                 ))
               ) : (
                 <div className="py-12 text-slate-500">
-                  暂无捐赠数据，期待您的支持！
+                  {i.noDonations}
                 </div>
               )}
             </div>
@@ -121,10 +217,12 @@ export default function DonatePageClient({
 
           <div className="mt-12 text-center">
             <p className="text-sm text-slate-500 dark:text-slate-400">
-              * 捐赠列表数据可能存在短暂延迟，通常会在 24 小时内更新。
+              {i.disclaimer}
             </p>
           </div>
         </div>
+        )}
+
       </div>
     </main>
   );
@@ -260,6 +358,56 @@ function TimelineItem({ donation }: { donation: DonationData }) {
           </p>
         )}
       </div>
+    </div>
+  );
+}
+
+function CryptoAddressCard({
+  crypto,
+  lang,
+}: {
+  crypto: (typeof cryptoAddresses)[number];
+  lang: string;
+}) {
+  const i = getT(lang);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(crypto.address);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="group flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-emerald-200 hover:shadow-md dark:border-slate-800 dark:bg-slate-900/50 dark:hover:border-emerald-900">
+      <div
+        className={cn(
+          "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-white",
+          crypto.color,
+        )}
+      >
+        <Wallet className="h-5 w-5" />
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="text-sm font-semibold text-slate-900 dark:text-white">
+          {crypto.name}
+        </div>
+        <div className="truncate font-mono text-xs text-slate-500 dark:text-slate-400">
+          {crypto.address}
+        </div>
+      </div>
+      <button
+        onClick={handleCopy}
+        className={cn(
+          "flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all",
+          copied
+            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+            : "bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700",
+        )}
+      >
+        <Copy className="h-3.5 w-3.5" />
+        {copied ? i.copied : i.copyAddress}
+      </button>
     </div>
   );
 }
