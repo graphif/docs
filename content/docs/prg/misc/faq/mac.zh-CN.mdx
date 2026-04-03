@@ -3,6 +3,9 @@ title: Mac问题
 icon: Apple
 ---
 
+import Image from "next/image";
+import macOpenPrgFile from "../img/mac-open-prg-file.jpg";
+
 ### 安装后打开显示“已损坏，无法打开”
 
 原因是开发者没有 Apple Developer Program 会员资格，请打开终端输入以下命令命令解除限制：
@@ -40,3 +43,19 @@ sudo xattr -r -d com.apple.quarantine /Applications/Project\ Graph.app
 若升级系统后也无法输入文字，请反馈给开发者。
 
 macos 12及其以下的设备webkit版本过低，存在很多css样式不兼容的问题，还有可能会出现左上角红绿灯不显示、底部工具栏不居中，仅左侧边缘居中进而导致偏右的问题。
+
+### 总是请求文件夹访问权限
+
+发现Mac中打开已经保存的文件，总是请求文件夹访问权限，每次都要点确定，无论在设置中辅助功能是否给足了磁盘访问权限。
+
+解决方法：
+
+可能是prg文件存放在 “桌面” 或者 “文档” 这类受保护的文件夹中，目前实测在Home目录下新建一个文件夹，将prg文件保存在其中，再打开就不会再请求文件夹访问权限了。
+
+具体原因不详，可能是Mac系统的机制限制，也可能是开发者没有苹果开发者会员资格。
+
+<Image
+  src={macOpenPrgFile}
+  alt="macOS 打开 .prg 文件示例"
+  className="mx-auto h-auto w-full max-w-3xl rounded-lg"
+/>
