@@ -13,16 +13,30 @@ const processor = remark()
   .use(remarkGfm)
   .use(remarkMath);
 
+function resolveMarkdownPath(page: InferPageType<typeof source>): string {
+  const fromData = page.data._file?.absolutePath;
+  if (fromData) return fromData;
+  if (page.absolutePath) return page.absolutePath;
+  if (page.path) return page.path;
+  return `${(page.slugs?.length ? page.slugs.join("/") : "index") || "index"}.mdx`;
+}
+
 export async function getLLMText(page: InferPageType<typeof source>) {
   const processed = await processor.process({
-    path: page.data._file.absolutePath,
+    path: resolveMarkdownPath(page),
     value: page.data.content,
   });
 
-  return `# ${page.data.title}
-URL: ${page.url}
+  const title = page.data.title ?? page.slugs?.join("/") ?? "Untitled";
+  const rawDesc = page.data.description;
+  const description =
+    rawDesc === undefined || rawDesc === null
+      ? ""
+      : String(rawDesc).trim();
+  const head =
+    description.length > 0
+      ? `# ${title}\nURL: ${page.url}\n\n${description}\n\n`
+      : `# ${title}\nURL: ${page.url}\n\n`;
 
-${page.data.description}
-
-${processed.value}`;
+  return `${head}${processed.value}`;
 }
