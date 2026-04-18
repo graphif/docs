@@ -3,6 +3,7 @@
 import Link from "fumadocs-core/link";
 import {
   ArrowRight,
+  BookOpen,
   Box,
   Cpu,
   ExternalLink,
@@ -191,6 +192,12 @@ export function Hero({ stats }: { stats: StatsData }) {
                   {stats.githubStars.toLocaleString()}
                 </span>
               )}
+            </Link>
+            <Link
+              href="/docs/prg"
+              className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+            >
+              <BookOpen className="h-5 w-5" /> 文档
             </Link>
           </div>
         </motion.div>
