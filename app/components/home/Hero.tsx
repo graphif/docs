@@ -7,22 +7,79 @@ import {
   Cpu,
   ExternalLink,
   Github,
-  Layout,
   Pause,
   Play,
   Sparkles,
   Volume2,
   VolumeX,
   Workflow,
-  Zap,
 } from "lucide-react";
-import { motion } from "motion/react";
+import {
+  motion,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "motion/react";
 import { useRef, useState } from "react";
+import type { StatsData } from "../../[lang]/(home)/page.client";
 
-export function Hero() {
+export function Hero({ stats }: { stats: StatsData }) {
+  const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+
+  // Mouse parallax motion values
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth springs for mouse parallax
+  const smoothMouseX = useSpring(mouseX, { damping: 50, stiffness: 400 });
+  const smoothMouseY = useSpring(mouseY, { damping: 50, stiffness: 400 });
+
+  // Mouse parallax transforms
+  const videoMouseX = useTransform(smoothMouseX, [-0.5, 0.5], ["1%", "-1%"]);
+  const videoMouseY = useTransform(smoothMouseY, [-0.5, 0.5], ["1%", "-1%"]);
+  const contentMouseX = useTransform(smoothMouseX, [-0.5, 0.5], ["-2%", "2%"]);
+  const contentMouseY = useTransform(smoothMouseY, [-0.5, 0.5], ["-2%", "2%"]);
+
+  // Mouse scale/tilt effects for content
+  const contentScale = useTransform(
+    smoothMouseY,
+    [-0.5, 0, 0.5],
+    [0.98, 1, 0.98],
+  );
+  const contentRotateX = useTransform(smoothMouseY, [-0.5, 0.5], [5, -5]);
+  const contentRotateY = useTransform(smoothMouseX, [-0.5, 0.5], [-5, 5]);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+
+  const videoY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const { clientX, clientY } = e;
+    const { width, height, left, top } =
+      containerRef.current.getBoundingClientRect();
+
+    // Normalize coordinates to -0.5 to 0.5
+    const x = (clientX - left) / width - 0.5;
+    const y = (clientY - top) / height - 0.5;
+
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -43,9 +100,22 @@ export function Hero() {
   };
 
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 py-20">
+    <section
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 px-6 py-20"
+    >
       {/* Background Video */}
-      <div className="absolute inset-0">
+      <motion.div
+        style={{
+          y: videoY,
+          scale: videoScale,
+          x: videoMouseX,
+          translateY: videoMouseY,
+        }}
+        className="absolute -inset-10"
+      >
         <video
           ref={videoRef}
           src="https://assets.graphif.dev/videos/launch.webm"
@@ -56,8 +126,8 @@ export function Hero() {
           playsInline
         />
         {/* Overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-slate-950/60" />
-      </div>
+        <div className="absolute -inset-10 bg-slate-950/60" />
+      </motion.div>
 
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 -z-10">
@@ -65,7 +135,18 @@ export function Hero() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
       </div>
 
-      <div className="mx-auto grid w-full max-w-7xl auto-rows-[minmax(160px,auto)] grid-cols-1 gap-6 md:grid-cols-12">
+      <motion.div
+        style={{
+          y: contentY,
+          x: contentMouseX,
+          translateY: contentMouseY,
+          scale: contentScale,
+          rotateX: contentRotateX,
+          rotateY: contentRotateY,
+          perspective: 1000,
+        }}
+        className="mx-auto grid w-full max-w-7xl auto-rows-[minmax(160px,auto)] grid-cols-1 gap-6 md:grid-cols-12"
+      >
         {/* Main Brand Bento - Large */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -105,6 +186,11 @@ export function Hero() {
               className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
             >
               <ProjectGithubIcon className="h-5 w-5" /> GITHUB
+              {stats.githubStars > 0 && (
+                <span className="ml-1 rounded-full bg-white/10 px-2 py-0.5 text-xs font-medium text-slate-300">
+                  {stats.githubStars.toLocaleString()}
+                </span>
+              )}
             </Link>
           </div>
         </motion.div>
@@ -114,7 +200,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="group flex flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all group-hover:bg-blue-500 group-hover:text-white">
             <Cpu className="h-6 w-6" />
@@ -132,7 +218,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="group flex flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10 transition-all group-hover:bg-purple-500 group-hover:text-white">
             <Box className="h-6 w-6" />
@@ -150,7 +236,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="group flex flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 transition-all group-hover:bg-amber-500 group-hover:text-white">
             <Workflow className="h-6 w-6" />
@@ -163,32 +249,41 @@ export function Hero() {
           </div>
         </motion.div>
 
-        {/* Feature Bento: Zen UI - Large Width */}
+        {/* Stats Bento - Multi-metric */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="group flex flex-col items-center gap-8 rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-8 md:row-span-1 md:flex-row"
+          className="group flex flex-col justify-center rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-8 md:row-span-1"
         >
-          <div className="flex-1">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 transition-all group-hover:bg-emerald-500 group-hover:text-white">
-              <Layout className="h-6 w-6" />
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="flex flex-col items-center border-white/5 md:border-r">
+              <span className="mb-1 text-sm font-bold text-emerald-500 uppercase">
+                总用户数
+              </span>
+              <span className="text-4xl font-black text-white">
+                {stats.totalUsers.toLocaleString()}
+              </span>
             </div>
-            <h3 className="mb-2 text-2xl font-bold text-white">禅意界面设计</h3>
-            <p className="leading-relaxed text-slate-500">
-              零干扰设计语言。移除所有不必要的 UI
-              元素，让你与你的思想独处，沉浸在纯粹的逻辑之美中。
-            </p>
-          </div>
-          <div className="relative flex aspect-video w-full flex-1 items-center justify-center overflow-hidden rounded-2xl border border-white/5 bg-slate-950">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent" />
-            <Zap className="h-12 w-12 animate-pulse text-slate-800" />
-            <div className="absolute right-4 bottom-3 font-mono text-[10px] tracking-widest text-slate-700 uppercase">
-              Zen Mode Active
+            <div className="flex flex-col items-center border-white/5 md:border-r">
+              <span className="mb-1 text-sm font-bold text-blue-500 uppercase">
+                日均活跃用户
+              </span>
+              <span className="text-4xl font-black text-white">
+                {stats.averageDau.toLocaleString()}
+              </span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="mb-1 text-sm font-bold text-purple-500 uppercase">
+                GitHub Stars
+              </span>
+              <span className="text-4xl font-black text-white">
+                {stats.githubStars.toLocaleString()}
+              </span>
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* Video Controls - Fixed Bottom Right */}
       <div className="fixed right-10 bottom-10 z-50 flex gap-3">
