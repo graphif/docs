@@ -8,6 +8,7 @@ import {
   Cpu,
   ExternalLink,
   Github,
+  Loader2,
   Pause,
   Play,
   Sparkles,
@@ -16,20 +17,51 @@ import {
   Workflow,
 } from "lucide-react";
 import {
+  AnimatePresence,
   motion,
   useMotionValue,
   useScroll,
   useSpring,
   useTransform,
 } from "motion/react";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState, useTransition } from "react";
 import type { StatsData } from "../../[lang]/(home)/page.client";
 
 export function Hero({ stats }: { stats: StatsData }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [expandingTarget, setExpandingTarget] = useState<{
+    rect: DOMRect;
+    href: string;
+    children: React.ReactNode;
+    className: string;
+  } | null>(null);
+  const [showLoading, setShowLoading] = useState(false);
+
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+
+  const handleExpandClick = (
+    e: React.MouseEvent<HTMLElement>,
+    href: string,
+    children: React.ReactNode,
+    className: string,
+  ) => {
+    e.preventDefault();
+    const rect = e.currentTarget.getBoundingClientRect();
+    setExpandingTarget({ rect, href, children, className });
+
+    // Show loading overlay after 1000ms
+    setTimeout(() => {
+      setShowLoading(true);
+      startTransition(() => {
+        router.push(href);
+      });
+    }, 1000);
+  };
 
   // Mouse parallax motion values
   const mouseX = useMotionValue(0);
@@ -152,7 +184,7 @@ export function Hero({ stats }: { stats: StatsData }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="group relative flex flex-col justify-center overflow-hidden rounded-[3rem] border border-white/10 bg-white/[0.03] p-10 shadow-2xl backdrop-blur-3xl md:col-span-8 md:row-span-2 md:p-16"
+          className="group relative flex flex-col justify-center overflow-hidden rounded-[3rem] border border-white/10 bg-white/3 p-10 shadow-2xl backdrop-blur-3xl md:col-span-8 md:row-span-2 md:p-16"
         >
           <div className="absolute top-0 right-0 h-64 w-64 bg-emerald-500/5 blur-[100px] transition-colors group-hover:bg-emerald-500/10" />
 
@@ -165,7 +197,7 @@ export function Hero({ stats }: { stats: StatsData }) {
             续写<span className="text-emerald-400">未竟</span>之章
             <br />
             重构你的
-            <span className="bg-gradient-to-r from-emerald-400 to-cyan-300 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-emerald-400 to-cyan-300 bg-clip-text text-transparent">
               知识网络
             </span>
           </h1>
@@ -177,7 +209,20 @@ export function Hero({ stats }: { stats: StatsData }) {
           <div className="flex flex-wrap gap-4">
             <Link
               href="/release/latest"
-              className="group flex items-center gap-2 rounded-2xl bg-emerald-500 px-8 py-4 font-bold text-white transition-all hover:bg-emerald-400 hover:shadow-lg active:scale-95"
+              onClick={(e) =>
+                handleExpandClick(
+                  e,
+                  "/release/latest",
+                  <>
+                    立即下载{" "}
+                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  </>,
+                  "group flex items-center gap-2 rounded-2xl bg-emerald-500 px-8 py-4 font-bold text-white transition-all hover:bg-emerald-400 hover:shadow-lg active:scale-95",
+                )
+              }
+              className={`group flex items-center gap-2 rounded-2xl bg-emerald-500 px-8 py-4 font-bold text-white transition-all hover:bg-emerald-400 hover:shadow-lg active:scale-95 ${
+                expandingTarget?.href === "/release/latest" ? "opacity-0" : ""
+              }`}
             >
               立即下载{" "}
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -195,7 +240,19 @@ export function Hero({ stats }: { stats: StatsData }) {
             </Link>
             <Link
               href="/docs/prg"
-              className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              onClick={(e) =>
+                handleExpandClick(
+                  e,
+                  "/docs/prg",
+                  <>
+                    <BookOpen className="h-5 w-5" /> 文档
+                  </>,
+                  "flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95",
+                )
+              }
+              className={`flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95 ${
+                expandingTarget?.href === "/docs/prg" ? "opacity-0" : ""
+              }`}
             >
               <BookOpen className="h-5 w-5" /> 文档
             </Link>
@@ -207,7 +264,7 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all group-hover:bg-blue-500 group-hover:text-white">
             <Cpu className="h-6 w-6" />
@@ -225,17 +282,44 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="md:col-span-4 md:row-span-1"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10 transition-all group-hover:bg-purple-500 group-hover:text-white">
-            <Box className="h-6 w-6" />
-          </div>
-          <div>
-            <h3 className="mb-2 text-xl font-bold text-white">.PRG 容器</h3>
-            <p className="text-sm leading-relaxed text-slate-500">
-              MsgPack 二进制序列化，比 JSON 节省 40% 空间，极速解析。
-            </p>
-          </div>
+          <Link
+            href="/docs/spec/prg"
+            onClick={(e) =>
+              handleExpandClick(
+                e,
+                "/docs/spec/prg",
+                <>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10 transition-all group-hover:bg-purple-500 group-hover:text-white">
+                    <Box className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="mb-2 text-xl font-bold text-white">
+                      .PRG 容器
+                    </h3>
+                    <p className="text-sm leading-relaxed text-slate-500">
+                      MsgPack 二进制序列化，比 JSON 节省 40% 空间，极速解析。
+                    </p>
+                  </div>
+                </>,
+                "group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl transition-all hover:bg-white/5 active:scale-[0.98]",
+              )
+            }
+            className={`group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl transition-all hover:bg-white/5 active:scale-[0.98] ${
+              expandingTarget?.href === "/docs/spec/prg" ? "opacity-0" : ""
+            }`}
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-purple-500/20 bg-purple-500/10 transition-all group-hover:bg-purple-500 group-hover:text-white">
+              <Box className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="mb-2 text-xl font-bold text-white">.PRG 容器</h3>
+              <p className="text-sm leading-relaxed text-slate-500">
+                MsgPack 二进制序列化，比 JSON 节省 40% 空间，极速解析。
+              </p>
+            </div>
+          </Link>
         </motion.div>
 
         {/* Feature Bento: Topology - Medium */}
@@ -243,7 +327,7 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 transition-all group-hover:bg-amber-500 group-hover:text-white">
             <Workflow className="h-6 w-6" />
@@ -261,7 +345,7 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="group flex flex-col justify-center rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-3xl md:col-span-8 md:row-span-1"
+          className="group flex flex-col justify-center rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-8 md:row-span-1"
         >
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             <div className="flex flex-col items-center border-white/5 md:border-r">
@@ -328,6 +412,92 @@ export function Hero({ stats }: { stats: StatsData }) {
           <ExternalLink className="h-5 w-5" />
         </a>
       </div>
+
+      <AnimatePresence>
+        {expandingTarget && (
+          <motion.div
+            initial={{
+              position: "fixed",
+              top: expandingTarget.rect.top,
+              left: expandingTarget.rect.left,
+              width: expandingTarget.rect.width,
+              height: expandingTarget.rect.height,
+              zIndex: 100,
+              transformOrigin: "center center",
+            }}
+            animate={{
+              top: 0,
+              left: 0,
+              width: "100vw",
+              height: "100vh",
+            }}
+            transition={{
+              type: "spring",
+              damping: 25,
+              stiffness: 120,
+              mass: 1,
+            }}
+            className="pointer-events-none flex items-center justify-center overflow-hidden"
+          >
+            {/* The content replica */}
+            <motion.div
+              initial={{
+                scale: 1,
+              }}
+              animate={{
+                scale:
+                  Math.max(
+                    typeof window !== "undefined"
+                      ? window.innerWidth / expandingTarget.rect.width
+                      : 1,
+                    typeof window !== "undefined"
+                      ? window.innerHeight / expandingTarget.rect.height
+                      : 1,
+                  ) * 10,
+              }}
+              transition={{
+                type: "spring",
+                damping: 25,
+                stiffness: 120,
+                mass: 1,
+              }}
+              className={`${expandingTarget.className} relative overflow-hidden`}
+              style={
+                {
+                  border: "none",
+                  width: expandingTarget.rect.width,
+                  height: expandingTarget.rect.height,
+                  flexShrink: 0,
+                  whiteSpace: "nowrap",
+                } as any
+              }
+            >
+              {expandingTarget.children}
+
+              {/* The mask layer moved INSIDE the content replica */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="bg-fd-background absolute inset-0 z-10 backdrop-blur-2xl"
+              />
+            </motion.div>
+
+            {/* The loading overlay */}
+            <motion.div
+              initial={{ opacity: 0, pointerEvents: "none" }}
+              animate={{
+                opacity: showLoading ? 1 : 0,
+                pointerEvents: showLoading ? "auto" : "none",
+              }}
+              className="absolute inset-32 z-20 flex flex-col justify-end gap-4"
+            >
+              <Loader2 className="h-12 w-12 animate-spin" />
+              <p className="text-3xl">正在加载…</p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
