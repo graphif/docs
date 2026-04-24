@@ -50,7 +50,7 @@ export async function generateMetadata(props: {
   if (!page) notFound();
 
   return {
-    title: page.data.title,
+    title: `${page.data.title} - Graphif Docs / ${page.slugs[0]}`,
     description: page.data.description,
     openGraph: {
       title: page.data.title,

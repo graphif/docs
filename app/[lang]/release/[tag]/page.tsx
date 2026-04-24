@@ -16,6 +16,7 @@ import {
   Package,
   Terminal,
 } from "lucide-react";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import production from "react/jsx-runtime";
 import rehypeReact from "rehype-react";
@@ -24,6 +25,18 @@ import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ tag: string }>;
+}): Promise<Metadata> {
+  const { tag } = await params;
+  return {
+    title: `Release ${tag} - Project Graph`,
+    description: `下载 Project Graph 的 ${tag === "latest" ? "最新版本" : `版本 ${tag}`}，查看更新日志和相关说明。`,
+  };
+}
 
 export default async function Page(props: {
   params: Promise<{ tag: string; lang: string }>;
