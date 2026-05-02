@@ -1,0 +1,85 @@
+---
+title: 扩展
+icon: Album
+---
+
+<Callout>
+  在开始编写扩展前，建议先学习
+  [Comlink](https://github.com/googlechromelabs/comlink)
+  的使用，因为扩展必须使用它来和主线程通信，例如调用 API
+</Callout>
+
+<Callout type="warn">
+值得注意的是，扩展调用主线程的各种 API 时，都必须使用 `await`，因为这些 API 都是异步的
+
+</Callout>
+
+<Callout type="warn">
+更加值得注意的是，每一次调用主线程的 API 时（即使用 `await`），都会产生一个全新的 Proxy 对象以及一次跨线程通信，因此如果需要频繁调用主线程的 API，建议先将它们缓存到一个变量里，例如：
+
+```js
+const project = await prg.tabs_getCurrentProject();
+const stageManager = await project.stageManager;
+```
+
+</Callout>
+
+## 扩展包格式
+
+一个扩展就是一个文件夹或者 prg 文件（没错，就是工程文件的格式），里面必须包含 `metadata.msgpack` 和 `extension.js` 两个文件
+
+其中 `metadata.msgpack` 和工程文件有所不同，扩展包的元数据需要写在 `extension` 字段里
+
+```json
+{
+  "version": "2.0.0",
+  "extension": {
+    "id": "com.example.hello-world",
+    "name": "示例扩展",
+    "description": "这是一个用于演示的示例扩展包",
+    "version": "1.0.0",
+    "author": "Author <author@example.com>"
+  }
+}
+```
+
+## `extension.js`
+
+`extension.js` 是扩展的入口文件
+
+### 运行环境
+
+- Web Worker: 扩展在一个独立的线程中运行，无法直接访问 DOM 和主线程的变量
+- ES Module: 不能用 `importScripts`
+- Blob URL: 不能导入其他模块，但是可以用 CDN 的方式导入第三方库
+- Async IIFE: 可以用顶层 await
+
+### 自动注入的 API
+
+扩展在启动时会自动且强制地注入一些 API
+
+- `Comlink`: 用于和主线程之间通信，建议使用 `prg` 来调用主线程的 API，`Comlink` 用于调用 `Comlink.proxy` 等方法
+- `Comlink.transferHandlers`: 详见 [Transfer Handlers](/docs/extension/transfer-handlers)
+- `prg`: `Comlink.wrap(self)` 的结果，可以通过它调用主线程暴露的 API
+
+## 示例
+
+此示例展示了如何注册一个快捷键，当用户依次按下 `q u e s` 时，给当前选中的节点添加一个问号，并修改节点颜色
+
+```js
+await prg.keybinds_register(
+  "ques",
+  { $lucide: "User" },
+  "q u e s",
+  Comlink.proxy(async () => {
+    const project = await prg.tabs_getCurrentProject();
+    const stageManager = await project.stageManager;
+    const selectedEntities = await stageManager.getSelectedEntities();
+    const first = await selectedEntities[0];
+    const text = await first.text;
+    await first.rename(`❓ ${text}`);
+    first.color = { _: "Color", r: 255, g: 0, b: 0 };
+    await prg.toast_success("添加了问号并修改了节点颜色");
+  }),
+);
+```

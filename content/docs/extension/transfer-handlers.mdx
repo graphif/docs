@@ -1,0 +1,58 @@
+---
+title: Transfer Handlers
+icon: Binary
+---
+
+## AUTO_PROXY
+
+将主线或扩展线程发送的对象、深层对象、数组等复杂数据类型自动套上一层 `Comlink.proxy`，以便在主线程和扩展线程之间无缝传递复杂数据结构
+
+<Callout type="warn">
+  如果传输的是数组，不会产生 `proxy([1,2,3])`，而是
+  `[proxy(1),proxy(2),proxy(3)]`，以便直接使用 `for` 等方法
+</Callout>
+
+## CUSTOM_TYPES
+
+鉴于 Project Graph 主线程中存在很多特殊数据类型（如 `Color`, `TextNode`），所以提供了一种能使扩展线程创建这些数据类型的实例的方法
+
+扩展线程可以直接把一个经过 [Graphif Serializer](/docs/serializer) 序列化后的对象传给主线程，并且可以添加 `$rpc` 属性来设定一些配置
+
+<Callout type="warn">
+  如果目标类没有 `@passObject` 装饰器（如
+  `Color`），则每个键的顺序必须与类的构造函数的参数顺序**完全匹配**
+</Callout>
+
+```json title="Color"
+{
+  "_": "Color",
+  "r": 255,
+  "g": 0,
+  "b": 0,
+  // Color的第四个参数是可选的，所以可以不传a
+  "a": 1
+}
+```
+
+```json title="TextNode"
+{
+  "$rpc": {
+    // TextNode的构造函数是[project, options]，第一个参数是project
+    // 所以需要设置这个选项来让主线程知道应该把这个对象传给project来构造TextNode实例
+    "deserializeWithProject": true
+  },
+  "_": "TextNode",
+  // TextNode的所有选项都是可选的
+  "content": "Hello, World!"
+}
+```
+
+## LUCIDE_ICON
+
+如果需要在扩展中使用 Lucide Icons，可以直接传一个包含 `$lucide` 属性的对象，主线程会自动把它转换成对应的 React 组件
+
+```json
+{
+  "$lucide": "Settings"
+}
+```
