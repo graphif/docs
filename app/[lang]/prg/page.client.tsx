@@ -250,7 +250,7 @@ export default function HomePage({ stats }: { stats: StatsData }) {
   );
 }
 
-// --- Sections ---
+// --- Page sections ---
 
 function Hero({ stats }: { stats: StatsData }) {
   return (
