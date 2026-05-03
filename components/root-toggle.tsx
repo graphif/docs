@@ -1,5 +1,5 @@
 'use client';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
 import { type ComponentProps, type ReactNode, useMemo, useState } from 'react';
 import Link from 'fumadocs-core/link';
 import { usePathname } from 'fumadocs-core/framework';
@@ -56,12 +56,12 @@ export function RootToggle({
         <PopoverTrigger
           {...props}
           className={cn(
-            'flex items-center gap-2 rounded-lg p-2 border bg-fd-secondary/50 text-start text-fd-secondary-foreground transition-colors hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground',
+            'flex items-center gap-2 rounded-lg p-2 border bg-fd-secondary/50 text-start text-fd-secondary-foreground transition-colors hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground cursor-pointer',
             props.className,
           )}
         >
           {item}
-          <ChevronsUpDown className="shrink-0 ms-auto size-4 text-fd-muted-foreground" />
+          <ChevronRight className={cn("shrink-0 ms-auto size-4 text-fd-muted-foreground transition-transform", open && "rotate-90")} />
         </PopoverTrigger>
       )}
       <PopoverContent className="flex flex-col gap-1 w-(--radix-popover-trigger-width) p-1 fd-scroll-container">
