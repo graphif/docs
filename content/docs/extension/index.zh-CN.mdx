@@ -3,6 +3,10 @@ title: 扩展
 icon: Album
 ---
 
+扩展即插件，它可以给 Project Graph 添加各种自定义的功能，例如新的快捷键、菜单项、甚至是节点等等……
+
+## 扩展开发建议
+
 <Callout>
   在开始编写扩展前，建议先学习
   [Comlink](https://github.com/googlechromelabs/comlink)
@@ -26,7 +30,18 @@ const stageManager = await project.stageManager;
 
 ## 扩展包格式
 
+
+```
+com.example.hello-world.prg/
+├── metadata.msgpack（必须存在）
+├── extension.js（必须存在）
+├── README.md
+└── ...
+```
+
 一个扩展就是一个文件夹或者 prg 文件（没错，就是工程文件的格式），里面必须包含 `metadata.msgpack` 和 `extension.js` 两个文件
+
+### metadata文件
 
 其中 `metadata.msgpack` 和工程文件有所不同，扩展包的元数据需要写在 `extension` 字段里
 
@@ -43,26 +58,18 @@ const stageManager = await project.stageManager;
 }
 ```
 
-## `extension.js`
+metadata字段解释
+
+- `id`: 扩展的唯一标识符，建议使用反向域名命名法，例如 `com.example.hello-world`，将会与文件名保持一致
+- `name`: 扩展的名称，仅作展示
+- `description`: 扩展的描述，仅作展示
+- `version`: 扩展最低支持的软件的prg文件版本，不是软件本身的版本号
+- `extension.version`: 扩展本身的版本号，建议遵循语义化版本规范
+- `author`: 扩展的作者信息，邮箱可选填
+
+### extension.js 文件
 
 `extension.js` 是扩展的入口文件
-
-### 运行环境
-
-- Web Worker: 扩展在一个独立的线程中运行，无法直接访问 DOM 和主线程的变量
-- ES Module: 不能用 `importScripts`
-- Blob URL: 不能导入其他模块，但是可以用 CDN 的方式导入第三方库
-- Async IIFE: 可以用顶层 await
-
-### 自动注入的 API
-
-扩展在启动时会自动且强制地注入一些 API
-
-- `Comlink`: 用于和主线程之间通信，建议使用 `prg` 来调用主线程的 API，`Comlink` 用于调用 `Comlink.proxy` 等方法
-- `Comlink.transferHandlers`: 详见 [Transfer Handlers](/docs/extension/transfer-handlers)
-- `prg`: `Comlink.wrap(self)` 的结果，可以通过它调用主线程暴露的 API
-
-## 示例
 
 此示例展示了如何注册一个快捷键，当用户依次按下 `q u e s` 时，给当前选中的节点添加一个问号，并修改节点颜色
 
@@ -83,3 +90,19 @@ await prg.keybinds_register(
   }),
 );
 ```
+
+### 运行环境
+
+- Web Worker: 扩展在一个独立的线程中运行，无法直接访问 DOM 和主线程的变量
+- ES Module: 不能用 `importScripts`
+- Blob URL: 不能导入其他模块，但是可以用 CDN 的方式导入第三方库
+- Async IIFE: 可以用顶层 await
+
+### 自动注入的 API
+
+扩展在启动时会自动且强制地注入一些 API
+
+- `Comlink`: 用于和主线程之间通信，建议使用 `prg` 来调用主线程的 API，`Comlink` 用于调用 `Comlink.proxy` 等方法
+- `Comlink.transferHandlers`: 详见 [Transfer Handlers](/docs/extension/transfer-handlers)
+- `prg`: `Comlink.wrap(self)` 的结果，可以通过它调用主线程暴露的 API
+
