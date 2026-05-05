@@ -5,41 +5,30 @@ icon: Album
 
 扩展即插件，它可以给 Project Graph 添加各种自定义的功能，例如新的快捷键、菜单项、甚至是节点等等……
 
-## 扩展开发建议
-
-<Callout>
-  在开始编写扩展前，建议先学习
-  [Comlink](https://github.com/googlechromelabs/comlink)
-  的使用，因为扩展必须使用它来和主线程通信，例如调用 API
-</Callout>
-
-<Callout type="warn">
-值得注意的是，扩展调用主线程的各种 API 时，都必须使用 `await`，因为这些 API 都是异步的
-
-</Callout>
-
-<Callout type="warn">
-更加值得注意的是，每一次调用主线程的 API 时（即使用 `await`），都会产生一个全新的 Proxy 对象以及一次跨线程通信，因此如果需要频繁调用主线程的 API，建议先将它们缓存到一个变量里，例如：
-
-```js
-const project = await prg.tabs_getCurrentProject();
-const stageManager = await project.stageManager;
-```
-
-</Callout>
-
 ## 扩展包格式
 
 
 ```
 com.example.hello-world.prg/
-├── metadata.msgpack（必须存在）
-├── extension.js（必须存在）
-├── README.md
+├── metadata.msgpack （必须存在）
+├── extension.js （必须存在）
+├── README.md （插件说明文件）
+├── icon.png （插件图标文件）
 └── ...
 ```
 
 一个扩展就是一个文件夹或者 prg 文件（没错，就是工程文件的格式），里面必须包含 `metadata.msgpack` 和 `extension.js` 两个文件
+
+插件的图标支持 png, jpg, svg, webp 等常见格式，建议使用正方形、同时避免文件体积过大。如果同时存在 `icon.png` 和 `icon.svg`，会优先使用 svg 格式的图标。
+
+具体的优先级顺序：`svg > webp > png > jpg`
+
+## 最简插件整体开发流程
+
+1. 创建一个插件项目文件夹
+2. 在项目中创建 `metadata.json` 和 `extension.js` 文件、并按正确格式编写它们
+3. 将 `metadata.json` 中的内容转换成 `metadata.msgpack` 二进制文件
+4. 将插件项目文件夹打包成一个 prg 文件
 
 ### metadata文件
 
@@ -67,6 +56,15 @@ metadata字段解释
 - `extension.version`: 扩展本身的版本号，建议遵循语义化版本规范
 - `author`: 扩展的作者信息，邮箱可选填
 
+
+#### json文件 转 msgpack文件
+
+如何生成或者编辑msgpack二进制文件？可以先写json文件，然后将json文件中的内容一次性转换成msgpack二进制文件，可以使用这个在线工具：
+
+https://graphif.github.io/json2msgpack/
+
+插件的metadata文件是否可以直接支持使用json文件，以便于编辑和维护，有待商榷。
+
 ### extension.js 文件
 
 `extension.js` 是扩展的入口文件
@@ -91,6 +89,8 @@ await prg.keybinds_register(
 );
 ```
 
+不需要 import prg，直接就可以使用API。
+
 ### 运行环境
 
 - Web Worker: 扩展在一个独立的线程中运行，无法直接访问 DOM 和主线程的变量
@@ -106,3 +106,15 @@ await prg.keybinds_register(
 - `Comlink.transferHandlers`: 详见 [Transfer Handlers](/docs/extension/transfer-handlers)
 - `prg`: `Comlink.wrap(self)` 的结果，可以通过它调用主线程暴露的 API
 
+### 打包prg文件
+
+最终的插件产物是一个prg文件。如何将插件项目文件夹打包成一个 prg 文件？
+
+1. 进入插件项目文件夹
+2. 多选、选中所有文件
+3. 右键 -> 压缩（Compress） -> 会生成一个 zip 文件
+4. 将 zip 文件的后缀改成 prg 即可
+
+<Callout>
+为什么不能直接把整个文件右键压缩成一个 zip 文件？因为如果直接右键压缩整个文件夹，解压后会多一层文件夹，而插件需要的结构是所有文件直接放在根目录下。
+</Callout>

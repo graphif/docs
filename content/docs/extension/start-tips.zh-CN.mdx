@@ -1,0 +1,29 @@
+---
+title: 扩展开发建议
+icon: Album
+---
+
+<Callout>
+  在正式开始编写扩展前，建议先学习
+  [Comlink](https://github.com/googlechromelabs/comlink)
+  的使用，因为扩展必须使用它来和主线程通信，例如调用 API
+</Callout>
+
+<Callout type="warn">
+值得注意的是，扩展调用主线程的各种 API 时，都必须使用 `await`，因为这些 API 都是异步的
+
+</Callout>
+
+<Callout type="warn">
+更加值得注意的是，每一次调用主线程的 API 时（即使用 `await`），都会产生一个全新的 Proxy 对象以及一次跨线程通信，因此如果需要频繁调用主线程的 API，建议先将它们缓存到一个变量里，例如：
+
+```js
+const project = await prg.tabs_getCurrentProject();
+const stageManager = await project.stageManager;
+```
+
+</Callout>
+
+如果实在不知道怎么做，可以用VSCode同时打开带个项目，一个是project-graph本身的源代码，另一个是即将新创建的插件项目。
+
+然后直接使用AI进行开发。

@@ -3,5 +3,5 @@
   "description": "编写 Project Graph 扩展",
   "root": true,
   "icon": "Blocks",
-  "pages": ["index", "transfer-handlers"]
+  "pages": ["start-tips", "index", "example", "transfer-handlers"]
 }
