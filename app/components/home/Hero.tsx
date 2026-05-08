@@ -264,12 +264,20 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group relative flex h-64 flex-col overflow-hidden rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-blue-500/20 bg-blue-500/10 transition-all group-hover:bg-blue-500 group-hover:text-white">
-            <Cpu className="h-6 w-6" />
-          </div>
-          <div>
+          {/* Always playing video background */}
+          <video
+            src="https://assets.graphif.dev/videos/demo-scale.webm"
+            className="absolute inset-0 z-0 h-full w-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 z-0 bg-slate-950/60" />
+
+          <div className="relative z-10 mt-auto">
             <h3 className="mb-2 text-xl font-bold text-white">高性能渲染</h3>
             <p className="text-sm leading-relaxed text-slate-500">
               Canvas 2D 底层驱动，提供丝滑顺畅的节点交互与视觉反馈。
@@ -327,12 +335,17 @@ export function Hero({ stats }: { stats: StatsData }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="group flex h-64 flex-col justify-between rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
+          className="group relative flex h-64 flex-col overflow-hidden rounded-[3rem] border border-white/10 bg-white/3 p-8 backdrop-blur-3xl md:col-span-4 md:row-span-1"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-500/20 bg-amber-500/10 transition-all group-hover:bg-amber-500 group-hover:text-white">
-            <Workflow className="h-6 w-6" />
-          </div>
-          <div>
+          {/* Always visible image background */}
+          <img
+            src="https://assets.graphif.dev/images/demo-algorithm.png"
+            alt=""
+            className="absolute inset-0 z-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 z-0 bg-slate-950/60" />
+
+          <div className="relative z-10 mt-auto">
             <h3 className="mb-2 text-xl font-bold text-white">无限拓扑</h3>
             <p className="text-sm leading-relaxed text-slate-500">
               支持嵌套图结构与双向关联，打破传统层级思维束缚。

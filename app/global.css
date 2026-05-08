@@ -55,12 +55,6 @@ body {
   @apply hover:bg-fd-accent/80 cursor-pointer;
 }
 
-/*@layer base {
-  *:not(pre, pre *, code, code *) {
-    font-family: MiSans;
-  }
-}*/
-
 @layer components {
   .prose blockquote {
     margin: 0;
