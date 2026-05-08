@@ -3,5 +3,14 @@
   "description": "编写 Project Graph 扩展",
   "root": true,
   "icon": "Blocks",
-  "pages": ["start-tips", "index", "example", "transfer-handlers"]
+  "pages": [
+    "index",
+    "tips",
+    "example",
+    "transfer-handlers",
+    "---使用 extprg 工具链开发---",
+    "extprg",
+    "---直接开发（不推荐）---",
+    "direct-development"
+  ]
 }

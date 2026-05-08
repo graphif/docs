@@ -1,0 +1,87 @@
+---
+title: extprg
+icon: Blocks
+---
+
+extprg 是由官方提供的一个工具链，类似 Vite 等工具链，它专门用于编译、打包、分发、安装 Project Graph 扩展，旨在让开发者能够更轻松地开发扩展。
+
+## 创建项目 (`create-extprg`)
+
+```sh
+pnpm create extprg
+```
+
+运行命令后，按照提示输入扩展名称、作者等信息，最后会在当前目录下生成一个新的扩展项目。
+
+<Callout>这里用到的是 `create-extprg` 这个包，不是 `extprg`</Callout>
+
+## 编写代码
+
+`create-extprg` 生成的项目中包含了 `extprg-types` 包，并且会自动把它添加到 `tsconfig.json` 的 `types` 中。因此可以用 TypeScript 编写扩展，并且在编写过程中可以享受类型提示和检查。
+
+<Callout>将鼠标移动到下方代码块中可体验类型提示</Callout>
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const project = await prg.tabs_getCurrentProject();
+if (!project) throw new Error("没有打开的项目");
+const sm = await project.stageManager;
+const selected = await sm.getSelectedEntities();
+await prg.toast(`选中节点数量 ${selected.length}`);
+const first = await selected[0];
+if (!("text" in first)) throw new Error("第一个选中节点没有文本属性");
+const text = await first.text;
+await prg.toast(`第一个选中节点的文本是 ${text}`);
+```
+
+<Callout type="warn">
+  由于自动生成脚本有一些小问题，所以 `extprg-types`
+  包中有极少数方法或属性的类型是 `any`，不影响正常开发。
+</Callout>
+
+## 常用命令
+
+### 开发
+
+```sh
+pnpm dev
+```
+
+运行后会持续监听 `src` 目录中的文件变化，并在每次变化后重新编译并安装扩展到系统的 Project Graph 中。
+
+<Callout>
+  可以在 Project Graph 的快捷键设置中搜索「重载应用」，绑定一个快捷键（比如
+  `Ctrl+F5`），这样每次修改完代码后按下这个快捷键就能快速重载应用（会导致所有未保存的文件丢失！），而不用重启整个软件。
+</Callout>
+
+### 编译
+
+```sh
+pnpm build
+```
+
+运行后会将相关文件生成在 `dist` 目录下，目录里的内容就是 prg 扩展包中的内容。
+
+### 安装
+
+```sh
+pnpm install:ext
+```
+
+运行后会将 `dist` 目录下的内容安装到系统的 Project Graph 中，安装完成后就可以在软件中使用这个扩展了。
+
+<Callout>
+  这个命令其实就是把 `dist`
+  目录里的内容复制到系统的扩展目录下，扩展目录的位置可以在软件的设置中查看。
+</Callout>
+
+<Callout>为什么不是 `pnpm install`？答案显而易见。</Callout>
+
+### 打包
+
+```sh
+pnpm package
+```
+
+此命令的作用其实就是把 `dist` 目录里的内容压缩成 zip 文件，生成在 `out` 目录下，文件名为 `{name}-{version}.zip`，其中 `{name}` 和 `{version}` 分别来自 `package.json` 中的 `name` 和 `version` 字段。
