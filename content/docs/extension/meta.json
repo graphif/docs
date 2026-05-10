@@ -11,6 +11,8 @@
     "---使用 extprg 工具链开发---",
     "extprg",
     "---直接开发（不推荐）---",
-    "direct-development"
+    "direct-development",
+    "---分发---",
+    "...distribution"
   ]
 }
