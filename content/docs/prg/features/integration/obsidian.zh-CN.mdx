@@ -9,6 +9,24 @@ Obsidian 是一个markdown工程化双联笔记软件，可以看到不同的mar
 
 Obsidian的笔记可以复制URI，直接在ProjectGraph中粘贴，会出现一个链接节点，双击链接节点的下半部分即可自动调用Obsidian打开相应的笔记。
 
+## 从 Obsidian 中打开 Project Graph 文件
+
+在 Obsidian 笔记中可以使用 `prg://` 协议链接，点击后直接唤起 Project Graph 并打开对应的 `.prg` 文件。
+
+**Markdown 链接格式：**
+
+```markdown
+[打开项目地图](prg:///Users/me/Documents/map.prg)
+[定位到节点](prg:///Users/me/Documents/map.prg?target=a1b2c3d4-...-uuid)
+[设置视角](prg:///Users/me/Documents/map.prg?location=500,300&zoom=2.0)
+```
+
+**使用 Obsidian URI：**
+
+Obsidian 支持将任何 URL 注册为链接，在笔记中粘贴 `prg://` 地址后即可点击跳转。你还可以将 `prg://` 链接嵌入到 Obsidian 的看板、表格或 Canvas 中使用。
+
+参数说明详见 [prg:// 协议链接](../feature/deep-link) 文档。
+
 ## 将ProjectGraph内容导入Obsidian
 
 还在研究中……

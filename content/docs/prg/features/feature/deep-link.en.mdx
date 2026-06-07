@@ -1,0 +1,61 @@
+---
+title: prg:// Protocol Link
+icon: Link
+---
+
+## Introduction
+
+Project Graph registers the `prg://` protocol, allowing other applications or web pages to open `.prg` files in Project Graph via links, with optional navigation to specific locations or nodes.
+
+For example, in Obsidian, Joplin, or other note-taking tools, you can insert a `prg://` link to directly open a Project Graph file and jump to a specific node or position.
+
+## URL Format
+
+```
+prg://<file-path>?parameters
+```
+
+| Parameter  | Type       | Required | Description                                   |
+| ---------- | ---------- | -------- | --------------------------------------------- |
+| `path`     | string     | Yes      | `.prg` file path (absolute or relative)       |
+| `target`   | string     | No       | UUID of a node to focus on                    |
+| `location` | `x,y`      | No       | Camera center position, e.g. `100,200`        |
+| `zoom`     | number     | No       | Zoom level, e.g. `1.5`                        |
+
+<Callout>
+  The file path supports the following forms:
+
+  - Absolute path: `prg:///home/user/project.prg` or `prg://C:/Users/.../project.prg`
+  - Relative path (matched against recent files): `prg://project.prg`
+  - When `path` parameter is omitted, the path can be written directly in the host part: `prg:///home/user/project.prg`
+
+  A shorthand form without double slashes is also supported: `prg:home/user/project.prg`
+</Callout>
+
+## Examples
+
+### Open file and focus on a node
+
+```
+prg:///Users/me/Documents/map.prg?target=a1b2c3d4-...-uuid
+```
+
+### Open file and set camera position & zoom
+
+```
+prg:///Users/me/Documents/map.prg?location=500,300&zoom=2.0
+```
+
+### Reference in Markdown
+
+```markdown
+[Open Project Map](prg:///Users/me/Documents/project-map.prg?location=100,200)
+```
+
+## How It Works
+
+The `prg://` protocol is implemented via Tauri's `tauri-plugin-deep-link` plugin, which registers the `prg` scheme handler with the operating system during installation.
+
+- **Cold Start**: The app checks for `prg://` URLs on launch and processes them automatically
+- **Hot Start**: If the app is already running, clicking a `prg://` link is handled in real-time via the `onOpenUrl` event
+- **Path Resolution**: Relative paths are matched against recently opened files; absolute paths are used directly

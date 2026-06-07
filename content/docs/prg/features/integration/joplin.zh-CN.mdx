@@ -13,6 +13,23 @@ Joplin 是一个开源笔记应用，其存储格式为 SQLite。
 
 直接打开project-graph，可以把这个链接粘贴到舞台上，会出现一个URL节点，双击节点的链接部分就可以调用打开Joplin软件！
 
+## 从 Joplin 中打开 Project Graph 文件
+
+在 Joplin 笔记中可以插入 `prg://` 协议链接，点击后直接唤起 Project Graph 并打开对应的 `.prg` 文件。
+
+**Markdown 链接格式：**
+
+```markdown
+[打开项目地图](prg:///Users/me/Documents/map.prg)
+[定位到节点](prg:///Users/me/Documents/map.prg?target=a1b2c3d4-...-uuid)
+```
+
+**直接粘贴 URL：**
+
+Joplin 会自动识别 `prg://` 开头的文本并渲染成可点击的链接。
+
+参数说明详见 [prg:// 协议链接](../feature/deep-link) 文档。
+
 ## 在 Joplin 中搜索 project-graph 的内容
 
 Joplin具有强大的搜索功能

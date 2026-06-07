@@ -1,0 +1,61 @@
+---
+title: prg:// 协议链接
+icon: Link
+---
+
+## 介绍
+
+Project Graph 注册了 `prg://` 协议，允许其他应用或网页通过链接直接打开 Project Graph 中的 `.prg` 文件，并定位到指定位置。
+
+例如在 Obsidian、Joplin 或其他笔记软件中，可以插入一条 `prg://` 链接，点击后即可打开对应的 Project Graph 文件并跳转到特定节点或位置。
+
+## 链接格式
+
+```
+prg://<文件路径>?参数
+```
+
+| 参数       | 类型       | 必填 | 说明                                           |
+| ---------- | ---------- | ---- | ---------------------------------------------- |
+| `path`     | string     | 是   | `.prg` 文件路径，可以是绝对路径或相对路径       |
+| `target`   | string     | 否   | 节点的 UUID，定位到指定节点                     |
+| `location` | `x,y`      | 否   | 相机中心位置，如 `100,200`                      |
+| `zoom`     | number     | 否   | 缩放倍率，如 `1.5`                              |
+
+<Callout>
+  文件路径支持以下形式：
+
+  - 绝对路径：`prg:///home/user/project.prg` 或 `prg://C:/Users/.../project.prg`
+  - 相对路径（根据最近打开文件匹配）：`prg://project.prg`
+  - 当省略 `path` 参数时，可直接将路径写在 host 部分：`prg:///home/user/project.prg`
+
+  也支持省略双斜杠的简写形式：`prg:home/user/project.prg`
+</Callout>
+
+## 使用示例
+
+### 打开文件并定位到节点
+
+```
+prg:///Users/me/Documents/map.prg?target=a1b2c3d4-...-uuid
+```
+
+### 打开文件并设置相机位置与缩放
+
+```
+prg:///Users/me/Documents/map.prg?location=500,300&zoom=2.0
+```
+
+### 在 Markdown 中引用
+
+```markdown
+[打开项目地图](prg:///Users/me/Documents/project-map.prg?location=100,200)
+```
+
+## 实现原理
+
+`prg://` 协议通过 Tauri 的 `tauri-plugin-deep-link` 插件实现，在应用安装时向操作系统注册 `prg` 协议处理程序。
+
+- **冷启动**：应用启动时检查是否由 `prg://` 链接唤起，自动处理链接
+- **热启动**：应用已在运行时，点击 `prg://` 链接会通过 `onOpenUrl` 事件实时处理
+- **路径匹配**：相对路径会从最近打开的文件列表中查找匹配，绝对路径直接读取
