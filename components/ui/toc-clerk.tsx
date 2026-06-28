@@ -1,17 +1,17 @@
-'use client';
-import * as Primitive from 'fumadocs-core/toc';
-import { type ComponentProps, useEffect, useRef, useState } from 'react';
-import { cn } from '../../lib/cn';
-import { TocThumb } from './toc-thumb';
-import { useTOCItems } from './toc';
-import { mergeRefs } from '../../lib/merge-refs';
-import { useI18n } from 'fumadocs-ui/contexts/i18n';
+"use client";
+import * as Primitive from "fumadocs-core/toc";
+import { type ComponentProps, useEffect, useRef, useState } from "react";
+import { cn } from "../../lib/cn";
+import { TocThumb } from "./toc-thumb";
+import { useTOCItems } from "./toc";
+import { mergeRefs } from "../../lib/merge-refs";
+import { useI18n } from "fumadocs-ui/contexts/i18n";
 
 export default function ClerkTOCItems({
   ref,
   className,
   ...props
-}: ComponentProps<'div'>) {
+}: ComponentProps<"div">) {
   const containerRef = useRef<HTMLDivElement>(null);
   const items = useTOCItems();
   const { text } = useI18n();
@@ -48,12 +48,12 @@ export default function ClerkTOCItems({
         w = Math.max(offset, w);
         h = Math.max(h, bottom);
 
-        d.push(`${i === 0 ? 'M' : 'L'}${offset} ${top}`);
+        d.push(`${i === 0 ? "M" : "L"}${offset} ${top}`);
         d.push(`L${offset} ${bottom}`);
       }
 
       setSvg({
-        path: d.join(' '),
+        path: d.join(" "),
         width: w + 1,
         height: h,
       });
@@ -70,7 +70,7 @@ export default function ClerkTOCItems({
 
   if (items.length === 0)
     return (
-      <div className="rounded-lg border bg-fd-card p-3 text-xs text-fd-muted-foreground">
+      <div className="bg-fd-card text-fd-muted-foreground rounded-lg border p-3 text-xs">
         {text.tocNoHeadings}
       </div>
     );
@@ -80,26 +80,28 @@ export default function ClerkTOCItems({
       {svg ? (
         <div
           className="absolute start-0 top-0 rtl:-scale-x-100"
-          style={{
-            width: svg.width,
-            height: svg.height,
-            maskImage: `url("data:image/svg+xml,${
-              // Inline SVG
-              encodeURIComponent(
-                `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svg.width} ${svg.height}"><path d="${svg.path}" stroke="black" stroke-width="1" fill="none" /></svg>`,
-              )
-            }")`,
-          }}
+          style={
+            {
+              width: svg.width,
+              height: svg.height,
+              maskImage: `url("data:image/svg+xml,${
+                // Inline SVG
+                encodeURIComponent(
+                  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svg.width} ${svg.height}"><path d="${svg.path}" stroke="black" stroke-width="1" fill="none" /></svg>`,
+                )
+              }")`,
+            } as any
+          }
         >
           <TocThumb
             containerRef={containerRef}
-            className="mt-(--fd-top) h-(--fd-height) bg-fd-primary transition-all"
+            className="bg-fd-primary mt-(--fd-top) h-(--fd-height) transition-all"
           />
         </div>
       ) : null}
       <div
         ref={mergeRefs(containerRef, ref)}
-        className={cn('flex flex-col', className)}
+        className={cn("flex flex-col", className)}
         {...props}
       >
         {items.map((item, i) => (
@@ -141,16 +143,18 @@ function TOCItem({
   return (
     <Primitive.TOCItem
       href={item.url}
-      style={{
-        paddingInlineStart: getItemOffset(item.depth),
-      }}
-      className="prose relative py-1.5 text-sm text-fd-muted-foreground hover:text-fd-accent-foreground transition-colors [overflow-wrap:anywhere] first:pt-0 last:pb-0 data-[active=true]:text-fd-primary"
+      style={
+        {
+          paddingInlineStart: getItemOffset(item.depth),
+        } as any
+      }
+      className="prose text-fd-muted-foreground hover:text-fd-accent-foreground data-[active=true]:text-fd-primary relative py-1.5 text-sm [overflow-wrap:anywhere] transition-colors first:pt-0 last:pb-0"
     >
       {offset !== upperOffset ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"
-          className="absolute -top-1.5 start-0 size-4 rtl:-scale-x-100"
+          className="absolute start-0 -top-1.5 size-4 rtl:-scale-x-100"
         >
           <line
             x1={upperOffset}
@@ -164,13 +168,15 @@ function TOCItem({
       ) : null}
       <div
         className={cn(
-          'absolute inset-y-0 w-px bg-fd-foreground/10',
-          offset !== upperOffset && 'top-1.5',
-          offset !== lowerOffset && 'bottom-1.5',
+          "bg-fd-foreground/10 absolute inset-y-0 w-px",
+          offset !== upperOffset && "top-1.5",
+          offset !== lowerOffset && "bottom-1.5",
         )}
-        style={{
-          insetInlineStart: offset,
-        }}
+        style={
+          {
+            insetInlineStart: offset,
+          } as any
+        }
       />
       {item.title}
     </Primitive.TOCItem>

@@ -209,7 +209,7 @@ export function PageTOCPopover(props: ComponentProps<"div">) {
               ? "0px"
               : "calc(var(--fd-sidebar-width) + var(--fd-layout-offset))",
             insetInlineEnd: 0,
-          }}
+          } as any}
         >
           {props.children}
         </header>
@@ -407,7 +407,7 @@ export function PageTOC(props: ComponentProps<"div">) {
         ...props.style,
         top: "calc(var(--fd-banner-height) + var(--fd-nav-height))",
         insetInlineEnd: `max(${offset}, calc(50vw - var(--fd-sidebar-width)/2 - var(--fd-page-width)/2))`,
-      }}
+      } as any}
     >
       <div className="flex h-full w-(--fd-toc-width) max-w-full flex-col pe-4">
         {props.children}

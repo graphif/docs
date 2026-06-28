@@ -1,6 +1,6 @@
 import { baseOptions } from "@/app/layout.config";
 import { HomeLayout } from "@/components/layout/home";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 export default async function Layout({
   params,
@@ -16,7 +16,7 @@ export default async function Layout({
       style={
         {
           "--spacing-fd-container": "1120px",
-        } as object
+        } as CSSProperties
       }
       {...baseOptions(lang)}
     >

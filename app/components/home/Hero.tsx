@@ -7,7 +7,6 @@ import {
   Box,
   Cpu,
   ExternalLink,
-  Github,
   Loader2,
   Pause,
   Play,
@@ -25,7 +24,13 @@ import {
   useTransform,
 } from "motion/react";
 import { useRouter } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
+import {
+  forwardRef,
+  type ComponentPropsWithoutRef,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
 import type { StatsData } from "../../[lang]/(home)/page.client";
 
 export function Hero({ stats }: { stats: StatsData }) {
@@ -516,5 +521,21 @@ export function Hero({ stats }: { stats: StatsData }) {
 }
 
 function ProjectGithubIcon({ className }: { className?: string }) {
-  return <Github className={className} />;
+  return <GithubIcon className={className} />;
 }
+
+const GithubIcon = forwardRef<SVGSVGElement, ComponentPropsWithoutRef<"svg">>(
+  function GithubIcon(props, ref) {
+    return (
+      <svg
+        ref={ref}
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+        {...props}
+      >
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.426 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.866-.013-1.7-2.782.605-3.369-1.344-3.369-1.344-.454-1.157-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.56 9.56 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.748-1.026 2.748-1.026.546 1.378.203 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.31.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .269.18.58.688.481A10.019 10.019 0 0 0 22 12.017C22 6.484 17.523 2 12 2Z" />
+      </svg>
+    );
+  },
+);

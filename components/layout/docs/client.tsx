@@ -52,7 +52,7 @@ export function LayoutBody(props: ComponentProps<'main'>) {
         paddingInlineStart: collapsed
           ? 'min(calc(100vw - var(--fd-page-width)), var(--fd-sidebar-width))'
           : 'var(--fd-sidebar-width)',
-      }}
+      } as any}
     >
       {props.children}
     </main>

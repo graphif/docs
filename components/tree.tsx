@@ -57,7 +57,7 @@ export default function Tree({
           <div
             style={{
               marginLeft: `${deep * 4}px`,
-            }}
+            } as any}
             key={k}
             className="flex gap-2"
           >
