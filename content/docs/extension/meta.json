@@ -6,7 +6,6 @@
   "pages": [
     "index",
     "tips",
-    "example",
     "transfer-handlers",
     "---使用 extprg 工具链开发---",
     "extprg",
