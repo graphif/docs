@@ -33,7 +33,7 @@ export default async function Page(props: {
         single: false,
       }}
     >
-      <DocsTitle>{page.data.title}</DocsTitle>
+      <DocsTitle className="mb-4 border-b pb-6">{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDXContent components={getMDXComponents()} />
