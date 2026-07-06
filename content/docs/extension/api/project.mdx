@@ -1,0 +1,17 @@
+---
+title: 标签页
+icon: File
+---
+
+利用此 API 可以访问到完整的 `Tab` 对象，进而进行一些高级操作，例如修改画布内容。
+
+<Callout>`Tab` 是一个基类，子类包括 `Project` 和 `Extension`。</Callout>
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+await prg.tabs_getAll();
+await prg.tabs_getAllProjects();
+await prg.tabs_getCurrent();
+await prg.tabs_getCurrentProject();
+```
