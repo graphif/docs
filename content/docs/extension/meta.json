@@ -11,6 +11,8 @@
     "extprg",
     "---直接开发（不推荐）---",
     "direct-development",
+    "---API---",
+    "...api",
     "---分发---",
     "...distribution"
   ]

@@ -28,7 +28,7 @@
     "@zip.js/zip.js": "^2.8.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "extprg-types": "^1.0.7",
+    "extprg-types": "^1.2.1",
     "framer-motion": "^12.23.26",
     "fumadocs-core": "16.0.6",
     "fumadocs-mdx": "13.0.3",

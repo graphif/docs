@@ -1,0 +1,98 @@
+---
+title: 对话框
+icon: MessageCircle
+---
+
+## 确认操作
+
+包含确认和取消按钮的对话框，通常用于让用户对操作进行确认。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const confirmed = await prg.dialog_confirm(
+  // 标题
+  "你确定？",
+  // 描述（可选）
+  "此操作不可撤销",
+  // 更多选项（可选）
+  {
+    // 是否为破坏性操作
+    destructive: false,
+  },
+);
+```
+
+## 输入框
+
+包含一个单行或多行的输入框的对话框，通常用于让用户输入一些信息。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const input = await prg.dialog_input(
+  // 标题
+  "请输入文本",
+  // 描述（可选）
+  "what can i say",
+  // 更多选项（可选）
+  {
+    // 默认值
+    defaultValue: "默认值",
+    // 占位符
+    placeholder: "请输入文本",
+    // 是否为破坏性操作
+    destructive: false,
+    // 是否为多行
+    multiline: false,
+  },
+);
+```
+
+## 复制文本
+
+将传入的文本显示出来，并提供复制按钮。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+await prg.dialog_copy(
+  // 标题
+  "复制文本",
+  // 描述（可选）
+  "这是要复制的文本",
+  // 要复制的文本（可选，如果不传则为空字符串）
+  "mamba out",
+);
+```
+
+## 自定义
+
+可自定义按钮的数量、文本、样式。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+// 返回按钮id
+const buttonId = await prg.dialog_buttons(
+  // 标题
+  "自定义对话框",
+  // 描述（可选）
+  "这是一个自定义对话框",
+  // 按钮数组
+  [
+    {
+      id: "ok",
+      label: "确定",
+      // 样式（可选）
+      // default,destructive,outline,secondary,ghost,link
+      variant: "destructive",
+    },
+    {
+      id: "cancel",
+      label: "取消",
+      variant: "secondary",
+    },
+  ],
+);
+```

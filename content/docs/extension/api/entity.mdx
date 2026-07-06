@@ -1,0 +1,142 @@
+---
+title: 自定义实体
+icon: Box
+---
+
+<Callout>本功能较为复杂，故以逐步教程的形式进行讲解。</Callout>
+
+## 构造碰撞箱
+
+可以使用序列化后的对象构造出碰撞箱对象。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const collisionBox = {
+  _: "CollisionBox",
+  shapes: [
+    {
+      _: "Rectangle",
+      location: { _: "Vector", x: 0, y: 0 },
+      size: { _: "Vector", x: 100, y: 100 },
+    },
+  ],
+};
+```
+
+可以简单封装一下。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+function vec(x: number, y: number) {
+  return { _: "Vector", x, y };
+}
+function rect(x: number, y: number, w: number, h: number) {
+  return { _: "Rectangle", location: vec(x, y), size: vec(w, h) };
+}
+function c(shapes: any[]) {
+  return { _: "CollisionBox", shapes };
+}
+const collisionBox = c([rect(0, 0, 100, 100)]);
+```
+
+## 编写渲染函数
+
+渲染函数输入实体的数据，输出 `ImageBitmap` 对象，可使用 `OffscreenCanvas` 进行绘制。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+async function renderCircle(data: {
+  text: string;
+  borderColor: string;
+  fontFamily: string;
+}): Promise<ImageBitmap> {
+  const canvas = new OffscreenCanvas(100, 100);
+  const ctx = canvas.getContext("2d")!;
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 100, 100);
+  ctx.strokeStyle = data.borderColor;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.arc(50, 50, 40, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.fillStyle = "black";
+  ctx.font = `20px ${data.fontFamily}`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(data.text, 50, 50);
+  return createImageBitmap(canvas);
+}
+```
+
+## 注册实体
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// @ts-ignore
+const vec = (_, _) => {};
+// @ts-ignore
+const rect = (_, _, _, _) => {};
+// @ts-ignore
+const c = (_) => ({ _: "CollisionBox" });
+const renderCircle = async () => new ImageBitmap();
+// ---cut---
+await prg.entity_registerType(
+  // id，扩展之间相互独立
+  "circle",
+  // 默认数据
+  { text: "", borderColor: "#fff", fontFamily: "system-ui" },
+  // 碰撞箱
+  c([rect(0, 0, 100, 100)]),
+  // 渲染函数
+  Comlink.proxy(renderCircle),
+);
+```
+
+## 响应点击事件
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+await prg.entity_onClick(
+  "circle",
+  Comlink.proxy(async (payload) => {
+    // 先获取到 Entity 对象，或者在创建实体时把 Entity 对象存起来（见下文）
+    const project = await prg.tabs_getCurrentProject();
+    if (!project) return;
+    const stageManager = await project.stageManager;
+    const entities: any[] = await (stageManager.getEntitiesByUUIDs([
+      await payload.uuid,
+    ]) as any);
+    if (!entities || entities.length === 0) return;
+    const entity = entities[0];
+    if (!entity) return;
+    // 必须使用 `setCustomData` 修改实体数据！否则不会触发重新渲染
+    await entity
+      .setCustomData
+      // ...
+      ();
+  }),
+);
+```
+
+## 创建实体
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const entity = await prg.entity_create(
+  "circle",
+  {
+    text: "Hello",
+    borderColor: "#fff",
+    fontFamily: "system-ui",
+  },
+  {
+    x: 100,
+    y: 100,
+  },
+);
+```

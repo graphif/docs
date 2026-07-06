@@ -1,0 +1,29 @@
+---
+title: 自定义快捷键
+icon: Keyboard
+---
+
+快捷键类似 VSCode 的命令，可以被用户添加到右键菜单或者菜单栏中。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+await prg.keybinds_register(
+  // id，扩展之间相互独立
+  "test",
+  // 图标
+  { $lucide: "Keyboard" },
+  // 默认按键
+  "C-S-A-t",
+  // 按下时的回调
+  Comlink.proxy(() => {
+    console.log("test");
+  }),
+  // 松开时的回调（可选）
+  Comlink.proxy(() => {
+    console.log("test up");
+  }),
+  // 是否是持续型快捷键（可选，默认 false）
+  true,
+);
+```

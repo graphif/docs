@@ -1,0 +1,26 @@
+---
+title: 设置
+icon: Settings
+---
+
+## 扩展设置
+
+扩展设置与全局设置和其他扩展的设置相互独立。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const value = await prg.settings_getOwn("key");
+await prg.settings_setOwn("key", value);
+```
+
+## 全局设置
+
+<Callout type="warn">不建议使用此 API 写入全局设置</Callout>
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const value = await prg.settings_getGlobal("key");
+await prg.settings_setGlobal("key", value);
+```

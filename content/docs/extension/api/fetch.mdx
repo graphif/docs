@@ -1,0 +1,39 @@
+---
+title: 网络请求
+icon: Globe
+---
+
+## Fetch
+
+与 Fetch API 相同，无视 CORS。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+await prg.fetch("https://graphif.dev", {
+  method: "POST",
+});
+```
+
+## 获取 JSON
+
+获取 JSON 数据时需要使用 `fetch_json`。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const json = await prg.fetch_json(
+  "https://api.github.com/repos/graphif/project-graph",
+);
+```
+
+## 获取二进制数据
+
+获取二进制数据时需要使用 `fetch_base64` 或者 `fetch_binary`。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+const base64 = await prg.fetch_base64("https://assets.graphif.dev/icon.png");
+const u8a = await prg.fetch_binary("https://assets.graphif.dev/icon.png");
+```

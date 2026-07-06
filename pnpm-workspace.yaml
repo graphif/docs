@@ -3,3 +3,6 @@ packages: []
 allowBuilds:
   esbuild: true
   sharp: true
+
+minimumReleaseAgeExclude:
+  - extprg-types@1.2.1
