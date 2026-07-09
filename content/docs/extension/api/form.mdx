@@ -1,0 +1,59 @@
+---
+title: 表单
+icon: Form
+---
+
+<Callout>
+  本文假设您使用了 `extprg` 工具链，如果是直接编写的
+  `extension.js`，强烈建议您更换到 `extprg` 工具链。
+</Callout>
+
+表单 API 可以实现询问用户输入的功能，比对话框更加好用。
+
+表单可以通过 JSON Schema 构建，而 JSON Schema 又可以通过 Zod 构建。
+
+这也是为什么推荐使用 `extprg` 工具链的原因，因为可以直接通过 `pnpm add` 安装第三方包并不需要关心打包问题。
+
+## 安装 Zod
+
+```bash
+pnpm add zod
+```
+
+## 构建表单
+
+值得注意的是，目前的表单 API 只支持 `z.string`, `z.number`, `z.boolean`, `z.union([z.string])` 四个类型，其他类型的字段会被忽略。
+
+这四个类型分别对应文本输入框、数字输入框、复选框和下拉选择框。
+
+每个字段都需要使用 `.describe()` 来设置显示在表单中的 label。
+
+```ts twoslash
+/// <reference types="extprg-types" />
+// ---cut---
+import z from "zod";
+const data = await prg.form(
+  z.toJSONSchema(
+    z.object({
+      name: z.string().min(1).max(10).describe("姓名"),
+      age: z.number().min(1).max(100).describe("年龄"),
+      // z.literal 上的 description 代表选项名称
+      // z.union 上的 description 代表字段名称
+      gender: z
+        .union([
+          z.literal("male").describe("男"),
+          z.literal("female").describe("女"),
+          z.literal("other").describe("其他"),
+        ])
+        .describe("性别"),
+      isStudent: z.boolean().describe("是否是学生"),
+    }),
+  ),
+  {
+    title: "注册",
+    confirmText: "注册",
+    // 用户点击取消会导致 Promise 被 reject！
+    cancelText: "取消",
+  },
+);
+```
