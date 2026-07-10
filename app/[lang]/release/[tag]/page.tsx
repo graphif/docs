@@ -168,11 +168,12 @@ export default async function Page(props: {
                 key={asset.name}
                 href={asset.browser_download_url}
                 fileName={
-                  asset.name.endsWith(".AppImage")
+                  (asset.name.endsWith(".AppImage")
                     ? "AppImage"
                     : asset.name.endsWith(".deb")
                       ? "Debian (.deb)"
-                      : "RedHat (.rpm)"
+                      : "RedHat (.rpm)") +
+                  (asset.name.includes("gpu") ? ", with CUDA support" : "")
                 }
                 fileSize={asset.size}
                 proxy={isZh}
@@ -259,7 +260,7 @@ function DownloadLink({
         <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-white shadow-sm dark:bg-slate-800">
           <Package className="size-4 text-slate-500" />
         </div>
-        <span className="truncate font-medium text-slate-700 dark:text-slate-200">
+        <span className="font-medium wrap-break-word text-slate-700 dark:text-slate-200">
           {fileName}
         </span>
       </div>
