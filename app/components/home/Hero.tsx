@@ -303,7 +303,7 @@ export function Hero({ stats }: { stats: StatsData }) {
           扩展系统 · API 能力
         </h2>
         <p className="mb-12 max-w-2xl text-slate-400">
-          v3.0 引入的扩展系统，让开发者可以通过 TypeScript 为软件添加任意功能。
+          v3.0 引入的扩展系统，让开发者可以通过 JavaScript 为软件添加任意功能。
           所有 API 通过{" "}
           <code className="rounded-md bg-white/5 px-1.5 py-0.5 font-mono text-sm text-emerald-400">
             await prg.xxx()
@@ -370,9 +370,9 @@ export function Hero({ stats }: { stats: StatsData }) {
             },
             {
               step: "04",
-              title: "Marketplace",
+              title: "扩展市场",
               cmd: "自动收录",
-              desc: "开源扩展设置 extprg Topic 即可自动登上 Marketplace。",
+              desc: "开源扩展设置 extprg Topic 即可自动被扩展市场收录。",
               href: "/docs/extension/distribution/marketplace",
             },
           ].map((item) => (
@@ -401,7 +401,7 @@ export function Hero({ stats }: { stats: StatsData }) {
               不会写代码？让 AI 帮你写
             </h2>
             <p className="mb-8 text-slate-400">
-              将以下提示词发送给 OpenCode, Claude Code, Codex 等 Agent
+              将以下提示词发送给 OpenCode, Codex, Claude Code 等 Agent
               工具，它们就能了解 Project Graph 的全部功能并为你编写扩展。
             </p>
 
