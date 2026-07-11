@@ -1,6 +1,6 @@
 import { baseOptions } from "@/app/layout.config";
 import { octo } from "@/app/octo";
-import { DocsLayout } from "@/components/layout/docs";
+import { DocsLayout } from "fumadocs-ui/layouts/notebook";
 import { Tag, TestTube2 } from "lucide-react";
 import { type ReactNode } from "react";
 

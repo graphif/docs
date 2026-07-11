@@ -19,6 +19,11 @@ const config = {
         destination: "https://api.graphif.dev/ext/donate",
         permanent: true,
       },
+      {
+        source: "/docs/:path*.md",
+        destination: "/llms.mdx/docs/:path*",
+        permanent: true,
+      },
     ];
   },
 };

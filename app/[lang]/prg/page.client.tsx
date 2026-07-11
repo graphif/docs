@@ -26,10 +26,10 @@ import {
 } from "motion/react";
 import {
   forwardRef,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
   useEffect,
   useRef,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
 } from "react";
 import { StatsData } from "./page";
 
@@ -198,31 +198,29 @@ function FadeIn({
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
 }) {
-  const variants = {
-    hidden: {
-      opacity: 0,
-      y: direction === "up" ? 32 : direction === "down" ? -32 : 0,
-      x: direction === "left" ? 32 : direction === "right" ? -32 : 0,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      x: 0,
-      transition: {
-        duration: 1,
-        ease: [0.16, 1, 0.3, 1],
-        delay: delay / 1000,
-      },
-    },
-  };
-
   return (
     <motion.div
       className={className}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1, margin: "50px" }}
-      variants={variants}
+      variants={{
+        hidden: {
+          opacity: 0,
+          y: direction === "up" ? 32 : direction === "down" ? -32 : 0,
+          x: direction === "left" ? 32 : direction === "right" ? -32 : 0,
+        },
+        visible: {
+          opacity: 1,
+          y: 0,
+          x: 0,
+          transition: {
+            duration: 1,
+            ease: [0.16, 1, 0.3, 1],
+            delay: delay / 1000,
+          },
+        },
+      }}
     >
       {children}
     </motion.div>

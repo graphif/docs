@@ -7,11 +7,14 @@ import { Pluggable } from "unified";
 
 export const docs = defineDocs({
   dir: "content/docs",
-  // docs: {
-  //   schema: frontmatterSchema.extend({
-  //     relatedFile: z.string().optional(),
-  //   }),
-  // },
+  docs: {
+    // schema: frontmatterSchema.extend({
+    //   relatedFile: z.string().optional(),
+    // }),
+    postprocess: {
+      includeProcessedMarkdown: true,
+    },
+  },
 });
 
 export default defineConfig({
@@ -29,6 +32,11 @@ export default defineConfig({
       // important: Shiki doesn't support lazy loading languages for codeblocks in Twoslash popups
       // make sure to define them first (e.g. the common ones)
       langs: ["js", "jsx", "ts", "tsx"],
+
+      themes: {
+        light: "vitesse-light",
+        dark: "vitesse-dark",
+      },
     },
   },
 });

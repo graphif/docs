@@ -1,10 +1,9 @@
 import { GoogleTagManager } from "@next/third-parties/google";
-import { NextProvider } from "fumadocs-core/framework/next";
+import { RootProvider } from "fumadocs-ui/provider/next";
 import "katex/dist/katex.css";
 import { Metadata } from "next";
 import { ReactNode } from "react";
 import "../global.css";
-import { Provider } from "./provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://graphif.dev"),
@@ -44,16 +43,14 @@ export default async function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col">
-        <NextProvider>
-          <Provider
-            i18n={{
-              locale: lang,
-              locales,
-            }}
-          >
-            {children}
-          </Provider>
-        </NextProvider>
+        <RootProvider
+          i18n={{
+            locale: lang,
+            locales,
+          }}
+        >
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

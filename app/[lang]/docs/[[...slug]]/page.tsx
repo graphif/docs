@@ -1,11 +1,12 @@
+import { Container } from "@/layouts/notebook/page/slots/container";
+import { source } from "@/lib/source";
+import { getMDXComponents } from "@/mdx-components";
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from "@/components/layout/page";
-import { source } from "@/lib/source";
-import { getMDXComponents } from "@/mdx-components";
+} from "fumadocs-ui/layouts/notebook/page";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
@@ -31,6 +32,9 @@ export default async function Page(props: {
       tableOfContent={{
         style: "clerk",
         single: false,
+      }}
+      slots={{
+        container: Container,
       }}
     >
       <DocsTitle className="mb-4 border-b pb-6">{page.data.title}</DocsTitle>

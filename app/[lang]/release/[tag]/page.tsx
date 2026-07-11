@@ -1,12 +1,12 @@
 import { octo } from "@/app/octo";
+import Link from "fumadocs-core/link";
+import { remarkHeading } from "fumadocs-core/mdx-plugins";
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from "@/components/layout/page";
-import Link from "fumadocs-core/link";
-import { remarkHeading } from "fumadocs-core/mdx-plugins";
+} from "fumadocs-ui/layouts/notebook/page";
 import {
   AlertTriangle,
   Command,

@@ -1,39 +1,32 @@
 'use client';
-import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
-import { forwardRef, useEffect, useState } from 'react';
+import { Collapsible as Primitive } from '@base-ui/react/collapsible';
+import type { ComponentProps } from 'react';
 import { cn } from '../../lib/cn';
 
-const Collapsible = CollapsiblePrimitive.Root;
+export const Collapsible = Primitive.Root;
 
-const CollapsibleTrigger = CollapsiblePrimitive.CollapsibleTrigger;
+export const CollapsibleTrigger = Primitive.Trigger;
 
-const CollapsibleContent = forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent>
->(({ children, ...props }, ref) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+export function CollapsibleContent({
+  children,
+  className,
+  ...props
+}: ComponentProps<typeof Primitive.Panel>) {
   return (
-    <CollapsiblePrimitive.CollapsibleContent
-      ref={ref}
+    <Primitive.Panel
       {...props}
-      className={cn(
-        'overflow-hidden',
-        mounted &&
-          'data-[state=closed]:animate-fd-collapsible-up data-[state=open]:animate-fd-collapsible-down',
-        props.className,
-      )}
+      className={(s) =>
+        cn(
+          "overflow-hidden [&[hidden]:not([hidden='until-found'])]:hidden h-(--collapsible-panel-height) transition-[height,opacity] data-starting-style:opacity-0 data-starting-style:h-0 data-ending-style:h-0 data-ending-style:opacity-0",
+          typeof className === 'function' ? className(s) : className,
+        )
+      }
     >
       {children}
-    </CollapsiblePrimitive.CollapsibleContent>
+    </Primitive.Panel>
   );
-});
+}
 
-CollapsibleContent.displayName =
-  CollapsiblePrimitive.CollapsibleContent.displayName;
-
-export { Collapsible, CollapsibleTrigger, CollapsibleContent };
+export type CollapsibleProps = Primitive.Root.Props;
+export type CollapsibleContentProps = Primitive.Panel.Props;
+export type CollapsibleTriggerProps = Primitive.Trigger.Props;

@@ -6,3 +6,6 @@ allowBuilds:
 
 minimumReleaseAgeExclude:
   - extprg-types@1.3.2
+
+overrides:
+  style-to-js: ^2.0.0
