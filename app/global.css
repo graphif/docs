@@ -44,19 +44,16 @@
   --color-fd-accent-foreground: hsl(340, 5%, 90%);
   --color-my-docs: hsl(220, 15%, 6%);
 }
-body {
-  background-color: var(--color-fd-background);
-}
 
-:root {
-  --fd-page-width: 1400px;
-}
+@layer base {
+  body {
+    background-color: var(--color-fd-background);
+  }
 
-#nd-sidebar > :first-child > :first-child > :nth-child(2) {
-  @apply hover:bg-fd-accent/80 cursor-pointer;
-}
+  :root {
+    --fd-page-width: 1400px;
+  }
 
-@layer components {
   .prose blockquote {
     margin: 0;
     padding: 0 1em;
@@ -82,6 +79,28 @@ body {
   .prose blockquote,
   .prose dl {
     font-weight: 300;
+  }
+}
+
+@utility ticks-* {
+  position: relative;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: -4.5px;
+    border: 5px solid transparent;
+  }
+
+  &::before {
+    left: 0;
+    border-left-color: --value(--color-*);
+  }
+  &::after {
+    right: 0;
+    border-right-color: --value(--color-*);
   }
 }
 

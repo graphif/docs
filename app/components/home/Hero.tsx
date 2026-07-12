@@ -5,8 +5,6 @@ import {
   ArrowRight,
   BookOpen,
   Box,
-  Check,
-  Copy,
   Download,
   File,
   GitBranch,
@@ -23,12 +21,7 @@ import {
   TreePine,
   Type,
 } from "lucide-react";
-import {
-  forwardRef,
-  useState,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from "react";
+import { forwardRef, useState, type ComponentPropsWithoutRef } from "react";
 import type { StatsData } from "../../[lang]/(home)/page.client";
 
 // ─── Data ─────────────────────────────────────────────
@@ -36,24 +29,25 @@ import type { StatsData } from "../../[lang]/(home)/page.client";
 const coreFeatures = [
   {
     icon: Scaling,
-    title: "自由布局",
+    title: "自由布局，流畅缩放",
     description: "随心拖拽、自由缩放，像在白板上构思一样无拘无束。",
     href: "/docs/prg/features/feature/camera",
-    demo: "https://assets.graphif.dev/videos/demo-scale.webm",
+    demo: "https://assets.graphif.dev/videos/scale.webm",
   },
   {
     icon: GitBranch,
-    title: "丰富的连线样式",
-    description: "直线、曲线、贝塞尔、折线、弧形线……多种连线类型适配不同场景。",
+    title: "丰富的逻辑结构",
+    description: "直线、虚线、无向边、凸包……多种连线类型适配不同结构。",
     href: "/docs/prg/features/stage-object/association",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/structures.webm",
   },
   {
     icon: Type,
     title: "多样的节点类型",
-    description: "文本、LaTeX 公式、图片、SVG、引用块、框……覆盖各种表达需求。",
+    description:
+      "文本、LaTeX 公式、图片、SVG、引用块、分组框……覆盖各种表达需求。",
     href: "/docs/prg/features/stage-object/entity",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/entities.webm",
   },
   {
     icon: Link2,
@@ -67,28 +61,28 @@ const coreFeatures = [
     title: "外部集成",
     description: "与 Xmind、Draw.io、Obsidian、VSCode、Joplin 等工具无缝对接。",
     href: "/docs/prg/features/integration",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/obsidian.webm",
   },
   {
     icon: Keyboard,
     title: "快捷键系统",
     description: "支持按键序列（C-S-A-t），可自定义、可绑定右键菜单和菜单栏。",
     href: "/docs/prg/features/feature/shortcut-key",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/keybinds.webm",
   },
   {
     icon: TreePine,
     title: "节点树",
     description: "以树形结构总览所有节点，快速定位和导航复杂画布内容。",
     href: "/docs/prg/features/feature/tree",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/tree.webm",
   },
   {
     icon: Download,
     title: "一键导出 / 导入",
-    description: "单文件分发，支持与 Draw.io、幕布等多格式互导。",
+    description: "单文件分发，支持与其他软件互导。",
     href: "/docs/prg/features/feature/export",
-    demo: "",
+    demo: "https://assets.graphif.dev/videos/export-plain-text.webm",
   },
 ];
 
@@ -159,41 +153,64 @@ const apiFeatures = [
   },
 ];
 
+const comments = [
+  {
+    name: "安安",
+    comment:
+      "真的很感谢这个产品，自去年开始用以来已经给八本书做了思维导图，可以说我能养成阅读的习惯很大程度上就是因为它。",
+  },
+  {
+    name: "wei",
+    comment: "独辟蹊径，非常实用。",
+  },
+  {
+    name: "zko",
+    comment:
+      "用了有一阵子了，终于发现最适合自己的笔记工具。祝各位开发者身体健康～",
+  },
+  {
+    name: "tiepi",
+    comment: "加油！",
+  },
+  {
+    name: "寒武纪J",
+    comment: "这款开源导图软件让我学习以及研究某些知识时变得游刃有余。",
+  },
+  {
+    name: "yuametal",
+    comment: "太棒了，一下子成为我的工作流的核心之一。",
+  },
+  {
+    name: "HARRY",
+    comment: "功能齐全，特效炫酷，给用obsidian的我带来了很大的震撼。",
+  },
+  {
+    name: "Hα 木羽",
+    comment: "“国内最强开源思维导图大纲工具” ——欸我这么说是对的吧（-v-）",
+  },
+  {
+    name: "Lin Qiu",
+    comment: "非常牛逼得软件，制作者大佬更是顶中顶，软件很酷",
+  },
+  {
+    name: "Ecl1pse_",
+    comment: "最顺手的一个软件！加油！",
+  },
+  {
+    name: "Xizarque",
+    comment: "又有记笔记的动力啦！",
+  },
+  {
+    name: "缘起",
+    comment:
+      "牛逼克拉斯！！！这就是智慧的力量！！！这就是宇宙天地造化大师！！！",
+  },
+];
+
 // ─── Hover Preview ────────────────────────────────────
 
 function isVideoUrl(url: string): boolean {
   return url.endsWith(".webm") || url.endsWith(".mp4");
-}
-
-function CardWithPreview({
-  demo,
-  children,
-}: {
-  demo?: string;
-  children: ReactNode;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className="relative size-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {children}
-      {isHovered && demo && (
-        <div className="absolute left-1/2 z-50 mt-2 -translate-x-1/2">
-          <div className="w-96 overflow-hidden rounded-xl border border-white/10 bg-slate-900 shadow-2xl">
-            {isVideoUrl(demo) ? (
-              <video src={demo} autoPlay muted loop playsInline />
-            ) : (
-              <img src={demo} alt="" className="h-96 w-auto" />
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
 }
 
 // ─── Component ────────────────────────────────────
@@ -208,24 +225,17 @@ export function Hero({ stats }: { stats: StatsData }) {
   };
 
   return (
-    <main className="bg-slate-950 text-white selection:bg-emerald-500 selection:text-white">
+    <main className="bg-neutral-950 text-white selection:bg-emerald-500 selection:text-white">
       {/* ─── Hero ─── */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,oklch(76.5%_0.177_163.223/12%),transparent_70%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,oklch(70.7%_0.165_254.624/5%),transparent_20%)]" />
-
-        <div className="relative mx-auto max-w-7xl px-6 pt-32 pb-24 md:pt-40 md:pb-32">
-          <div className="mb-8 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold tracking-widest text-emerald-400 uppercase">
-            <Sparkles className="h-3 w-3" />
-            Project Graph v3.0 · 扩展系统已发布
-          </div>
-
-          <h1 className="mb-6 max-w-4xl text-5xl leading-tight font-black tracking-tight text-white md:text-7xl">
-            <span className="text-emerald-400">无限画布</span>的节点图绘制工具
-            <br />以<span className="text-blue-400">扩展</span>驱动无限可能
+        <div className="ticks-neutral-700 relative mx-auto max-w-(--fd-layout-width) border border-b-0 border-neutral-700 px-32 pt-32 pb-24 md:pt-36 md:pb-32">
+          <h1 className="mb-6 max-w-4xl text-5xl leading-tight font-semibold tracking-tight text-white md:text-7xl">
+            无限画布的节点图绘制工具
+            <br />
+            以扩展驱动无限可能
           </h1>
 
-          <p className="mb-10 max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
+          <p className="mb-10 max-w-2xl text-lg leading-relaxed opacity-50 md:text-xl">
             Project Graph 是一款专注于快速绘制节点图的桌面工具。 全新的 v3.0
             扩展系统让开发者可以自定义快捷键、对话框、节点类型、主题……
             将软件的能力延伸到任何你需要的方向。
@@ -234,28 +244,28 @@ export function Hero({ stats }: { stats: StatsData }) {
           <div className="flex flex-wrap gap-4">
             <Link
               href="/release/latest"
-              className="group flex items-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-bold text-white transition-all hover:bg-emerald-400 active:scale-95"
+              className="group flex items-center gap-2 rounded-xl border-4 border-emerald-500 px-5 py-1 font-bold text-white transition-all hover:border-8 hover:bg-emerald-800 active:scale-95"
             >
+              <Download className="h-5 w-5" />
               立即下载
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link
               href="/docs/prg"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-blue-500 px-8 py-4 font-bold text-white transition-all hover:bg-blue-400 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border-4 border-blue-500 px-5 py-1 font-bold text-white transition-all hover:border-8 hover:bg-blue-800 active:scale-95"
             >
               <BookOpen className="h-5 w-5" />
               阅读文档
             </Link>
             <Link
               href="/donate"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
             >
               <Heart className="h-5 w-5" />
               赞助
             </Link>
             <Link
               href="https://github.com/graphif"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
             >
               <GithubIcon className="h-5 w-5" />
               GitHub
@@ -270,39 +280,57 @@ export function Hero({ stats }: { stats: StatsData }) {
       </section>
 
       {/* ─── Core Features ─── */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
+      <section className="ticks-neutral-700 mx-auto flex max-w-(--fd-layout-width) flex-col items-center gap-6 border border-b-0 border-neutral-700 px-32 py-24">
+        <h2 className="text-3xl font-semibold text-white md:text-6xl">
           核心功能
         </h2>
-        <p className="mb-12 max-w-2xl text-slate-400">
+        <p className="opacity-50">
           无论你是设计师、开发者、教师还是研究者，Project Graph
           都能帮你快速绘制清晰的分析框架图。
         </p>
+      </section>
+      <section className="ticks-neutral-700 divide-nickel mx-auto grid max-w-(--fd-layout-width) grid-cols-1 divide-x divide-y divide-neutral-700 border border-b-0 border-neutral-700 sm:grid-cols-2">
+        {coreFeatures.map((feature) => (
+          <Link
+            key={feature.href}
+            href={feature.href}
+            className="relative flex flex-col gap-2 p-8 nth-last-[-n+2]:border-b-0"
+          >
+            <h3 className="text-2xl font-semibold text-white">
+              {feature.title}
+            </h3>
+            <p className="text-slate-500">{feature.description}</p>
+            {isVideoUrl(feature.demo) ? (
+              <video
+                src={feature.demo}
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Crect width='800' height='450' fill='%23111'/%3E%3Ccircle cx='400' cy='200' r='30' fill='none' stroke='%23ffffff' stroke-width='4' stroke-dasharray='150' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 400 200' to='360 400 200' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3Ctext x='400' y='280' font-family='Arial' font-size='20' fill='%23999' text-anchor='middle'%3E视频加载中%3C/text%3E%3C/svg%3E"
+                className="mt-4 w-full rounded-lg border border-white/10"
+              />
+            ) : (
+              feature.demo && (
+                <img
+                  src={feature.demo}
+                  alt=""
+                  className="mt-4 w-full rounded-lg border border-white/10"
+                />
+              )
+            )}
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {coreFeatures.map((feature) => (
-            <CardWithPreview key={feature.href} demo={feature.demo}>
-              <Link
-                href={feature.href}
-                className="group block size-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:bg-white/5 active:scale-[0.98]"
-              >
-                <feature.icon className="mb-4 h-6 w-6 text-emerald-400" />
-                <h3 className="mb-2 font-bold text-white">{feature.title}</h3>
-                <p className="text-sm leading-relaxed text-slate-500">
-                  {feature.description}
-                </p>
-              </Link>
-            </CardWithPreview>
-          ))}
-        </div>
+            <feature.icon className="absolute top-8 right-8 size-16 text-emerald-400 opacity-25" />
+          </Link>
+        ))}
       </section>
 
       {/* ─── Extension API ─── */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
-          扩展系统 · API 能力
+      <section className="ticks-neutral-700 mx-auto flex max-w-(--fd-layout-width) flex-col items-center gap-6 border border-b-0 border-neutral-700 px-32 py-24">
+        <h2 className="text-3xl font-semibold text-white md:text-6xl">
+          扩展系统
         </h2>
-        <p className="mb-12 max-w-2xl text-slate-400">
+        <p className="opacity-50">
           v3.0 引入的扩展系统，让开发者可以通过 JavaScript 为软件添加任意功能。
           所有 API 通过{" "}
           <code className="rounded-md bg-white/5 px-1.5 py-0.5 font-mono text-sm text-emerald-400">
@@ -310,187 +338,126 @@ export function Hero({ stats }: { stats: StatsData }) {
           </code>{" "}
           调用。
         </p>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {apiFeatures.map((api) => (
-            <CardWithPreview key={api.href} demo={api.demo}>
-              <Link
-                href={api.href}
-                className="group block size-full rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:bg-white/5 active:scale-[0.98]"
-              >
-                <api.icon className="mb-4 h-6 w-6 text-emerald-400" />
-                <h3 className="mb-2 font-bold text-white">{api.title}</h3>
-                <p className="mb-3 text-sm leading-relaxed text-slate-500">
-                  {api.description}
-                </p>
-                <div className="overflow-x-auto rounded-lg bg-slate-900 px-3 py-2 font-mono text-xs text-emerald-400/80">
-                  {api.code}
-                </div>
-              </Link>
-            </CardWithPreview>
-          ))}
-        </div>
       </section>
-
-      {/* ─── Dev Workflow ─── */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <h2 className="mb-4 text-3xl font-bold text-white md:text-4xl">
-          快速上手扩展开发
-        </h2>
-        <p className="mb-12 max-w-2xl text-slate-400">
-          使用官方提供的{" "}
-          <code className="rounded-md bg-white/5 px-1.5 py-0.5 font-mono text-sm text-emerald-400">
-            extprg
-          </code>{" "}
-          工具链，几分钟即可创建你的第一个扩展。
-        </p>
-
-        <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-4">
-          {[
-            {
-              step: "01",
-              title: "创建项目",
-              cmd: "pnpm create extprg",
-              desc: "运行命令，按照提示输入名称、作者等信息，生成扩展项目。",
-              href: "/docs/extension/extprg",
-            },
-            {
-              step: "02",
-              title: "编写代码",
-              cmd: "pnpm dev",
-              desc: "边开发边自动编译，享受 TypeScript 类型提示和自动安装。",
-              href: "/docs/extension/extprg",
-            },
-            {
-              step: "03",
-              title: "打包分发",
-              cmd: "pnpm package",
-              desc: "打包成 .prg 文件，发布到 GitHub Release。",
-              href: "/docs/extension/extprg",
-            },
-            {
-              step: "04",
-              title: "扩展市场",
-              cmd: "自动收录",
-              desc: "开源扩展设置 extprg Topic 即可自动被扩展市场收录。",
-              href: "/docs/extension/distribution/marketplace",
-            },
-          ].map((item) => (
-            <Link
-              key={item.step}
-              href={item.href}
-              className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition-all hover:bg-white/5 active:scale-[0.98]"
-            >
-              <span className="mb-3 block text-3xl font-black text-emerald-500/30">
-                {item.step}
-              </span>
-              <h3 className="mb-2 font-bold text-white">{item.title}</h3>
-              <div className="mb-2 rounded-lg bg-slate-900 px-3 py-2 font-mono text-sm text-emerald-400/80">
-                {item.cmd}
-              </div>
-              <p className="text-sm leading-relaxed text-slate-500">
-                {item.desc}
-              </p>
-            </Link>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.03] p-10 md:p-14">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
-              不会写代码？让 AI 帮你写
-            </h2>
-            <p className="mb-8 text-slate-400">
-              将以下提示词发送给 OpenCode, Codex, Claude Code 等 Agent
-              工具，它们就能了解 Project Graph 的全部功能并为你编写扩展。
-            </p>
-
-            <div className="mb-6 inline-flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900 px-6 py-4 font-mono text-sm text-emerald-400">
-              <span>Read https://graphif.dev/llms.txt</span>
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="rounded-lg border border-white/10 p-1.5 text-slate-400 transition-all hover:bg-white/5 hover:text-white active:scale-90"
-                aria-label="复制提示词"
-              >
-                {copied ? (
-                  <Check className="h-4 w-4 text-emerald-400" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 text-center">
+      <section className="ticks-neutral-700 divide-nickel mx-auto grid max-w-(--fd-layout-width) grid-cols-1 divide-x divide-y divide-neutral-700 border border-b-0 border-neutral-700 sm:grid-cols-4">
+        {apiFeatures.map((api) => (
           <Link
-            href="/docs/extension"
-            className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+            key={api.href}
+            href={api.href}
+            className="relative flex flex-col gap-2 p-8 nth-last-[-n+4]:border-b-0"
           >
-            查看扩展开发文档
-            <ArrowRight className="h-5 w-5" />
+            <h3 className="text-2xl font-semibold text-white">{api.title}</h3>
+            <p className="text-slate-500">{api.description}</p>
+            <div className="overflow-x-auto rounded-lg bg-slate-900 px-3 py-2 font-mono text-xs text-emerald-400/80">
+              {api.code}
+            </div>
+
+            <api.icon className="absolute top-8 right-8 size-6 text-emerald-400 opacity-25" />
           </Link>
-        </div>
+        ))}
       </section>
 
-      {/* ─── Stats ─── */}
-      <section className="mx-auto max-w-7xl px-6 py-24">
-        <div className="grid grid-cols-1 gap-8 rounded-3xl border border-white/10 bg-white/[0.02] p-10 md:grid-cols-3 md:p-14">
-          <div className="flex flex-col items-center border-white/5 md:border-r">
-            <span className="mb-1 text-sm font-bold text-emerald-500 uppercase">
-              总用户数
-            </span>
-            <span className="text-4xl font-black text-white">
-              {stats.totalUsers.toLocaleString()}
-            </span>
-          </div>
-          <div className="flex flex-col items-center border-white/5 md:border-r">
-            <span className="mb-1 text-sm font-bold text-blue-500 uppercase">
-              日均活跃用户
-            </span>
-            <span className="text-4xl font-black text-white">
-              {stats.averageDau.toLocaleString()}
-            </span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="mb-1 text-sm font-bold text-purple-500 uppercase">
-              GitHub Stars
-            </span>
-            <span className="text-4xl font-black text-white">
-              {stats.githubStars.toLocaleString()}
-            </span>
-          </div>
+      {/* Comments */}
+      <section className="ticks-neutral-700 mx-auto flex max-w-(--fd-layout-width) flex-col items-center gap-6 border border-b-0 border-neutral-700 px-32 py-24">
+        <h2 className="text-3xl font-semibold text-white md:text-6xl">
+          深受社区喜爱
+        </h2>
+        <p className="opacity-50">不要只听我们说，来听听用户的声音</p>
+      </section>
+      <section className="ticks-neutral-700 relative mx-auto flex max-w-(--fd-layout-width) flex-col items-center gap-4 border border-b-0 border-neutral-700 px-8 py-16 md:px-32">
+        <div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+          {comments.map((item, i) => (
+            <div
+              key={i}
+              className="mb-6 inline-block w-full rounded-xl border border-white/10 bg-white/[0.03] px-6 py-5 transition-all hover:border-emerald-500/30 hover:bg-white/[0.06]"
+            >
+              <p className="mb-3 text-xl leading-relaxed text-slate-300">
+                {item.comment}
+              </p>
+              <p className="text-right text-emerald-400/80">— {item.name}</p>
+            </div>
+          ))}
+        </div>
+        <Link
+          href="/donate"
+          className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+        >
+          <Heart className="h-5 w-5" />
+          查看更多
+        </Link>
+      </section>
+      <section className="ticks-neutral-700 relative mx-auto grid max-w-(--fd-layout-width) grid-cols-3 flex-col items-center gap-6 border border-neutral-700 px-32 py-24">
+        <div className="flex flex-col items-center gap-6">
+          <h3 className="text-2xl font-medium opacity-50 md:text-3xl">
+            总用户数
+          </h3>
+          <span className="text-4xl md:text-6xl">{stats.totalUsers}</span>
+        </div>
+        <div className="flex flex-col items-center gap-6">
+          <h3 className="text-2xl font-medium opacity-50 md:text-3xl">
+            日均活跃用户
+          </h3>
+          <span className="text-4xl md:text-6xl">{stats.averageDau}</span>
+        </div>
+        <div className="flex flex-col items-center gap-6">
+          <h3 className="text-2xl font-medium opacity-50 md:text-3xl">
+            GitHub Stars
+          </h3>
+          <span className="text-4xl md:text-6xl">{stats.githubStars}</span>
+        </div>
+
+        <div className="absolute bottom-2 left-2 flex flex-col text-xs opacity-25">
+          <p>数据可能与实际数据存在差异。</p>
+          <p>
+            总用户数：自 2025 年 8 月 26 日起，所有启动过 Project Graph
+            的用户数量总和。数据来源于 Project Graph 的匿名统计系统。
+          </p>
+          <p>
+            日均活跃用户：过去 60 天内所有在 Project Graph
+            中打开文件的记录，按天和用户去重，再按天统计独立用户数，最后取天数的算术平均值。数据来源于
+            Project Graph 的匿名统计系统。
+          </p>
+          <p>
+            GitHub Stars：graphif/project-graph 仓库的 Star 数量。数据来源于
+            GitHub API。
+          </p>
         </div>
       </section>
 
       {/* ─── Bottom CTA ─── */}
-      <section className="mx-auto max-w-7xl px-6 pb-24">
-        <div className="flex flex-col items-center gap-6 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent p-14 text-center">
+      <section className="mx-auto mt-16 max-w-7xl px-6 pb-24">
+        <div className="flex flex-col items-center gap-8 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent p-24 text-center">
           <h2 className="text-3xl font-bold text-white md:text-4xl">
             开始使用 Project Graph
           </h2>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/release/latest"
-              className="group flex items-center gap-2 rounded-xl bg-emerald-500 px-8 py-4 font-bold text-white transition-all hover:bg-emerald-400 active:scale-95"
+              className="group flex items-center gap-2 rounded-xl border-4 border-emerald-500 px-5 py-1 font-bold text-white transition-all hover:border-8 hover:bg-emerald-800 active:scale-95"
             >
-              下载最新版
-              <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+              <Download className="h-5 w-5" />
+              立即下载
             </Link>
             <Link
               href="/docs/prg"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
             >
               <BookOpen className="h-5 w-5" />
               阅读文档
             </Link>
             <Link
               href="/docs/extension"
-              className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
             >
               <Sparkles className="h-5 w-5" />
               开发扩展
+            </Link>
+            <Link
+              href="/donate"
+              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+            >
+              <Heart className="h-5 w-5" />
+              前往赞助
             </Link>
           </div>
         </div>
