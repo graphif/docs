@@ -30,14 +30,15 @@ const coreFeatures = [
   {
     icon: Scaling,
     title: "自由布局，流畅缩放",
-    description: "随心拖拽、自由缩放，像在白板上构思一样无拘无束。",
+    description:
+      "随心拖拽、自由缩放，渐进式披露，俯瞰全局如观星海，深入毫末如探秘境。",
     href: "/docs/prg/features/feature/camera",
     demo: "https://assets.graphif.dev/videos/scale.webm",
   },
   {
     icon: GitBranch,
     title: "丰富的逻辑结构",
-    description: "直线、虚线、无向边、凸包……多种连线类型适配不同结构。",
+    description: "树形结构、拓扑结构、随意嵌套、能够表达任意的逻辑框架。",
     href: "/docs/prg/features/stage-object/association",
     demo: "https://assets.graphif.dev/videos/structures.webm",
   },
@@ -66,21 +67,24 @@ const coreFeatures = [
   {
     icon: Keyboard,
     title: "快捷键系统",
-    description: "支持按键序列（C-S-A-t），可自定义、可绑定右键菜单和菜单栏。",
+    description:
+      "支持自定义快捷键、有按键序列的快捷键、还支持续按住的操作、可绑定右键菜单和菜单栏。",
     href: "/docs/prg/features/feature/shortcut-key",
     demo: "https://assets.graphif.dev/videos/keybinds.webm",
   },
   {
     icon: TreePine,
     title: "节点树",
-    description: "以树形结构总览所有节点，快速定位和导航复杂画布内容。",
+    description:
+      "可以通过纯键盘操作，朝着任意方向生长节点、可以做出多层次不同方向结构的树，且具有自适应布局功能。",
     href: "/docs/prg/features/feature/tree",
     demo: "https://assets.graphif.dev/videos/tree.webm",
   },
   {
     icon: Download,
     title: "一键导出 / 导入",
-    description: "单文件分发，支持与其他软件互导。",
+    description:
+      "单文件分发，支持与 Meramid、纯文本等多种格式互导入导出，方便与 AI 进行交互。",
     href: "/docs/prg/features/feature/export",
     demo: "https://assets.graphif.dev/videos/export-plain-text.webm",
   },
