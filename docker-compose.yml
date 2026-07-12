@@ -1,0 +1,8 @@
+services:
+  docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+    restart: unless-stopped
