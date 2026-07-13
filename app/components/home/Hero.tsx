@@ -274,7 +274,7 @@ export function Hero({ stats }: { stats: StatsData }) {
               <GithubIcon className="h-5 w-5" />
               GitHub
               {stats.githubStars > 0 && (
-                <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs font-medium text-slate-300">
+                <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs font-medium opacity-75">
                   {stats.githubStars.toLocaleString()}
                 </span>
               )}
@@ -303,7 +303,7 @@ export function Hero({ stats }: { stats: StatsData }) {
             <h3 className="text-2xl font-semibold text-white">
               {feature.title}
             </h3>
-            <p className="text-slate-500">{feature.description}</p>
+            <p className="opacity-50">{feature.description}</p>
             {isVideoUrl(feature.demo) ? (
               <video
                 src={feature.demo}
@@ -351,8 +351,8 @@ export function Hero({ stats }: { stats: StatsData }) {
             className="relative flex flex-col gap-2 p-8 nth-last-[-n+4]:border-b-0"
           >
             <h3 className="text-2xl font-semibold text-white">{api.title}</h3>
-            <p className="text-slate-500">{api.description}</p>
-            <div className="overflow-x-auto rounded-lg bg-slate-900 px-3 py-2 font-mono text-xs text-emerald-400/80">
+            <p className="opacity-50">{api.description}</p>
+            <div className="overflow-x-auto rounded-lg bg-neutral-900 px-3 py-2 font-mono text-xs text-emerald-400/80">
               {api.code}
             </div>
 
@@ -375,7 +375,7 @@ export function Hero({ stats }: { stats: StatsData }) {
               key={i}
               className="mb-6 inline-block w-full rounded-xl border border-white/10 bg-white/[0.03] px-6 py-5 transition-all hover:border-emerald-500/30 hover:bg-white/[0.06]"
             >
-              <p className="mb-3 text-xl leading-relaxed text-slate-300">
+              <p className="mb-3 text-xl leading-relaxed opacity-75">
                 {item.comment}
               </p>
               <p className="text-right text-emerald-400/80">— {item.name}</p>
@@ -444,7 +444,7 @@ export function Hero({ stats }: { stats: StatsData }) {
             </Link>
             <Link
               href="/docs/prg"
-              className="flex items-center gap-2 rounded-xl border border-white/10 px-8 py-4 font-bold text-white transition-all hover:bg-white/10 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border-4 border-blue-500 px-5 py-1 font-bold text-white transition-all hover:border-8 hover:bg-blue-800 active:scale-95"
             >
               <BookOpen className="h-5 w-5" />
               阅读文档
