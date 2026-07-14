@@ -55,7 +55,7 @@ const coreFeatures = [
     title: "双向引用",
     description: "双链 + 孪生关系，节点间可建立双向关联，打破层级束缚。",
     href: "/docs/prg/features/stage-object/association/sync-association",
-    demo: "https://assets.graphif.dev/videos/sync-association.mp4",
+    demo: "https://assets.graphif.dev/videos/sync-association.webm",
   },
   {
     icon: Puzzle,
